@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword ,signInWithPopup,signOut,updateProfile} from "firebase/auth";
