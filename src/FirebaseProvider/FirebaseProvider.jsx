@@ -81,7 +81,7 @@ const FirebaseProvider = ({children}) => {
       status: 'Verified',
     }
     const { data } = await axios.put(
-      `${import.meta.env.VITE_API_URL}/user`,
+      `http://localhost:5000/api/user`,
       currentUser
     )
     return data
