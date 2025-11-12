@@ -6,8 +6,9 @@ import Register from '../pages/Register';
 
 export const router = createBrowserRouter([
   {
-    path: '/',
-    element: <MainLayout/>,
+    path: "/",
+    element: <MainLayout />,
+    errorElement:<Error></Error>,
     children: [
      
          
@@ -24,6 +25,4 @@ export const router = createBrowserRouter([
           },
     ],
   },
- 
-
 ]);
