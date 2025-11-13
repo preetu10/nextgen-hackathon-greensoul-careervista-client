@@ -5,7 +5,7 @@ import "../index.css"
 import ProtectedNavbar from "../components/ProtectedNavbar";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
-const Dashboard = () => {
+const Protected = () => {
     return (
         <>
     {/* <div className='bg-[#f6f5f5]'>
@@ -21,7 +21,7 @@ const Dashboard = () => {
       <Footer></Footer>
       <ToastContainer></ToastContainer>
     </div> */}
-    <div className='bg-[#f6f5f5]'>
+    <div className='bg-[#f6f5f5] min-h-screen'>
          <div className="max-w-7xl mx-auto">
           <ProtectedNavbar></ProtectedNavbar>
         </div>
@@ -30,7 +30,7 @@ const Dashboard = () => {
             <div className="w-1/5  ">
             <Sidebar></Sidebar>
             </div>
-            <div className="flex-1 md:w-2/5 py-8">
+            <div className="flex-1 md:w-2/5 px-4">
                 <Outlet></Outlet>
             </div>   
         </div>
@@ -41,4 +41,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Protected;
