@@ -35,7 +35,7 @@ const NavBar = () => {
       </li>
       <li className="text-lg font-medium">
         <NavLink
-          to="/blogs"
+          to="/learning-resources"
           style={({ isActive }) => {
             return {
               fontWeight: isActive ? "semibold" : "",
@@ -113,7 +113,7 @@ const NavBar = () => {
               <Link to="/dashboard" className="hover:text-[#048998]">Dashboard</Link>
             </li>
              <li>
-              <Link to="/user-profile" className="mt-2 hover:text-[#048998]">My Profile</Link>
+              <Link to="/v1/user-profile" className="mt-2 hover:text-[#048998]">My Profile</Link>
             </li>
             <li className="mt-2">
               <button

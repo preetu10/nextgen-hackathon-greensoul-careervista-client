@@ -1,9 +1,12 @@
 import { Outlet } from "react-router-dom";
+
+import { ToastContainer } from "react-toastify";
+import "../index.css"
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { ToastContainer } from "react-toastify";
-const MainLayout = () => {
-  return (
+const Dashboard = () => {
+    return (
+        <>
     <div className='bg-[#f6f5f5]'>
       <div className="max-w-7xl mx-auto min-h-screen">
         <div className="">
@@ -18,6 +21,8 @@ const MainLayout = () => {
       <ToastContainer></ToastContainer>
     </div>
   );
+        </>
+    );
 };
 
-export default MainLayout;
+export default Dashboard;
