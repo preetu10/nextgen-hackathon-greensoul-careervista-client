@@ -92,7 +92,7 @@ const Sidebar = () => {
             </li>
             <li>
               <NavLink
-                to="/resources"
+                to="/all-resources"
                 className="text-base"
                 style={({ isActive }) => {
                   return {
@@ -111,7 +111,7 @@ const Sidebar = () => {
               <>
                 <li>
                   <NavLink
-                    to="/v1/jobs"
+                    to="/v1/viewjobs"
                     className="text-base"
                     style={({ isActive }) => {
                       return {
