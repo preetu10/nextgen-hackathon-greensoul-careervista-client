@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { 
   Info, Settings, MapPin, ArrowRight, Briefcase, 
   CheckCircle2, Target, Sparkles, X, Monitor, 
   Server, Layers, Code, ChevronLeft, ChevronRight, 
   Rocket, TrendingUp, Zap, Loader2
 } from 'lucide-react';
+
 
 export default function JobRecommend() {
   const [selectedSkills, setSelectedSkills] = useState([]);
@@ -16,8 +17,11 @@ export default function JobRecommend() {
   const [isTransparencyModalOpen, setIsTransparencyModalOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+ 
 
   const { id } = useParams(); 
+
+  // const id=userProfile
 
   const slides = [
     {
@@ -519,7 +523,7 @@ const fetchRecommendedJobs = async () => {
             <button
               className="mt-6 rounded-xl bg-white text-black px-6 py-3 text-lg font-medium transition-all hover:bg-white/90 hover:shadow-lg inline-flex items-center"
             >
-              Browse All Jobs
+             <Link to="/v1/viewjobs">Browse All Jobs</Link>
               <ArrowRight className="ml-2 h-4 w-4" />
             </button>
 

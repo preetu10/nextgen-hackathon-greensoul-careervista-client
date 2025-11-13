@@ -51,7 +51,7 @@ export function Home() {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-[#f6f5f5]">
       {/* Carousel Section */}
       <section className="relative h-[600px] overflow-hidden mt-4 mx-4 sm:mx-6 lg:mx-8 rounded-3xl">
         {slides.map((slide, index) => {

@@ -126,7 +126,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/v1/suitable-jobs"
+                    to={`/v1/jobs/recommend/${userPro?._id}`}
                     className="text-base"
                     style={({ isActive }) => {
                       return {
