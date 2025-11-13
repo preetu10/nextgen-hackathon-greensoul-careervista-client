@@ -12,6 +12,7 @@ import ViewJobs from "../pages/ViewJobs";
 import { Home } from "../pages/Home";
 import JobDetails from "../pages/JobDetails";
 import AddJob from "../pages/AddJob";
+import JobRecommend from "../pages/JobRecommend";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
         path: "/addjob",
         element: <AddJob></AddJob>,
       },
+       {
+  path: "/jobs/recommend/:id",  
+  element: <JobRecommend></JobRecommend>,
+}
      
     ],
   },{
