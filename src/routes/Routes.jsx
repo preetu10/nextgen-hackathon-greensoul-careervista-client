@@ -10,6 +10,8 @@ import Protected from "../layouts/Protected"
 import PrivateRoutes from "./PrivateRoute";
 import ViewJobs from "../pages/ViewJobs";
 import { Home } from "../pages/Home";
+import JobDetails from "../pages/JobDetails";
+import AddJob from "../pages/AddJob";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -32,9 +34,17 @@ export const router = createBrowserRouter([
         path: "/home",
         element: <Home></Home>,
       },
-       {
+        {
         path: "/viewjobs",
         element: <ViewJobs></ViewJobs>,
+      },
+       {
+        path: "/viewjobdetails/:id",
+        element: <JobDetails></JobDetails>,
+      },
+            {
+        path: "/addjob",
+        element: <AddJob></AddJob>,
       },
      
     ],
@@ -49,7 +59,8 @@ export const router = createBrowserRouter([
       },{
         path:"update-profile",
         element:<UpdateProfile></UpdateProfile>
-      }
+      },
+     
     ]
   }
 ]);
