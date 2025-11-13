@@ -15,7 +15,6 @@ import AddJob from "../pages/AddJob";
 import AllResources from "../pages/LearningResources/AllResources";
 import ResourceRecommendations from "../pages/LearningResources/ResourceRecommendations";
 import JobRecommend from "../pages/JobRecommend";
-import JobRecommend from "../pages/JobRecommend";
 export const router = createBrowserRouter([
   {
     path: "/",
