@@ -14,6 +14,24 @@ const Register = () => {
   const [registerError, setRegisterError] = useState("");
   const [success, setSuccess] = useState("");
   const axiosPublic = useAxiosPublic();
+  const careerOptions = [
+    "Web Development",
+    "Mobile App Development",
+    "Data Science",
+    "Artificial Intelligence / Machine Learning",
+    "UI/UX Design",
+    "Graphic Design",
+    "Digital Marketing",
+    "Content Writing",
+    "Software Engineering",
+    "Cybersecurity",
+    "Cloud Computing",
+    "Business Analysis",
+    "DevOps / System Administration",
+    "Finance & Accounting",
+    "Human Resources (HR)",
+    "Education & Training",
+  ];
 
   const {
     register: formRegister,
@@ -79,19 +97,19 @@ const Register = () => {
               email,
               image,
               careerTrack: data.careerTrack,
-              role:data.role,
+              role: data.role,
               education: data.education,
               department: data.department,
               experience: data.experience,
             };
-            console.log("from register userdata: ",userData);
+            console.log("from register userdata: ", userData);
             // await fetch("http://localhost:5000/api/user", {
             //   method: "PUT",
             //   headers: { "Content-Type": "application/json" },
             //   body: JSON.stringify(userData),
             // });
             axiosPublic.post("/api/user", userData).then((res) => {
-              console.log(res.data)
+              console.log(res.data);
               if (res.data.insertedId) {
                 setSuccess("Registration successful!");
                 Swal.fire({
@@ -187,10 +205,11 @@ const Register = () => {
                     className="input input-bordered w-full h-12 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
                   >
                     <option value="">Select your track</option>
-                    <option value="Web Development">Web Development</option>
-                    <option value="Data">Data</option>
-                    <option value="Design">Design</option>
-                    <option value="Marketing">Marketing</option>
+                    {careerOptions.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
                   </select>
                   {errors.careerTrack && (
                     <span className="text-red-500 text-sm">
@@ -198,6 +217,7 @@ const Register = () => {
                     </span>
                   )}
                 </div>
+
                 <div className="form-control">
                   <label className="label">Role</label>
                   <select
