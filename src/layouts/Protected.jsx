@@ -2,12 +2,13 @@ import { Outlet } from "react-router-dom";
 
 import { ToastContainer } from "react-toastify";
 import "../index.css"
-import NavBar from "../components/NavBar";
+import ProtectedNavbar from "../components/ProtectedNavbar";
 import Footer from "../components/Footer";
+import Sidebar from "../components/Sidebar";
 const Dashboard = () => {
     return (
         <>
-    <div className='bg-[#f6f5f5]'>
+    {/* <div className='bg-[#f6f5f5]'>
       <div className="max-w-7xl mx-auto min-h-screen">
         <div className="">
           <NavBar />
@@ -19,8 +20,23 @@ const Dashboard = () => {
       </div>
       <Footer></Footer>
       <ToastContainer></ToastContainer>
-    </div>
-  );
+    </div> */}
+    <div className='bg-[#f6f5f5]'>
+         <div className="max-w-7xl mx-auto">
+          <ProtectedNavbar></ProtectedNavbar>
+        </div>
+    
+     <div className="flex flex-col md:flex-row  ">
+            <div className="w-1/5  ">
+            <Sidebar></Sidebar>
+            </div>
+            <div className="flex-1 md:w-2/5 py-8">
+                <Outlet></Outlet>
+            </div>   
+        </div>
+        </div>
+        <Footer></Footer>
+ 
         </>
     );
 };
