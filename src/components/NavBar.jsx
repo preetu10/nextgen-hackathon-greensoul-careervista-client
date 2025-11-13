@@ -1,10 +1,9 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
-import { useContext } from "react";
-import { AuthContext } from "../FirebaseProvider/FirebaseProvider";
+import useAuth from "../customHooks/useAuth";
 
 const NavBar = () => {
-  const { logOut, user } = useContext(AuthContext);
+  const { logOut, user } = useAuth();
   const links = (
     <>
       <li className="text-lg font-medium">
@@ -35,7 +34,7 @@ const NavBar = () => {
       </li>
       <li className="text-lg font-medium">
         <NavLink
-          to="/learning-resources"
+          to="/all-resources"
           style={({ isActive }) => {
             return {
               fontWeight: isActive ? "semibold" : "",

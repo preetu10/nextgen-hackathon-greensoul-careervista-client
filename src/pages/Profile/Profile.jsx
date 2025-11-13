@@ -66,7 +66,7 @@ export default function Profile() {
         {skillsArray.map((skill, idx) => (
           <span
             key={idx}
-            className="bg-gradient-to-r from-[#048998] to-[#026873] text-white px-3 py-1 rounded-full text-sm font-medium shadow"
+            className="bg-linear-to-r from-[#048998] to-[#026873] text-white px-3 py-1 rounded-full text-sm font-medium shadow"
           >
             {skill}
           </span>

@@ -361,7 +361,7 @@ const ViewJobs = () => {
                   </div>
 
                   <button
-                    onClick={() => navigate(`/viewjobdetails/${job._id}`)}
+                    onClick={() => navigate(`/v1/viewjobdetails/${job._id}`)}
                     className="w-full py-2 px-4 rounded-lg font-medium transition-all duration-200 hover:shadow-lg"
                     style={{
                       background: "#3bb4c1",

@@ -56,7 +56,7 @@ const JobDetails = () => {
   }
 
   return (
-    <div className="min-h-screen py-10 px-6 lg:px-20" style={{ background: '#f6f5f5' }}>
+    <div className="min-h-screen py-10 px-2 md:px-6 lg:px-20" style={{ background: '#f6f5f5' }}>
       <div className="max-w-5xl mx-auto">
         {/* Back Button */}
         <button
@@ -200,7 +200,7 @@ const JobDetails = () => {
             </div>
 
             {/* Contact Section */}
-            <div className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #3bb4c1 0%, #048998 100%)' }}>
+            <div className="p-2 md:p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #3bb4c1 0%, #048998 100%)' }}>
               <h2 className="text-xl font-bold text-white mb-3">
                 Ready to Apply?
               </h2>
@@ -211,7 +211,7 @@ const JobDetails = () => {
                 <span className="text-2xl">📧</span>
                 <a 
                   href={`mailto:${job.recruiterEmail}`}
-                  className="text-lg font-medium hover:underline"
+                  className="text-sm md:text-lg font-medium hover:underline"
                   style={{ color: 'white' }}
                 >
                   {job.recruiterEmail}
