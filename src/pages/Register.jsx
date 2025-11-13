@@ -5,14 +5,21 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import useAxiosPublic from "../customHooks/useAxiosPublic";
+// import { toast } from "react-toastify";
 
 const Register = () => {
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const [showPass, setShowPass] = useState(false);
   const [registerError, setRegisterError] = useState("");
   const [success, setSuccess] = useState("");
+  const axiosPublic = useAxiosPublic();
 
-  const { register: formRegister, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register: formRegister,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -24,12 +31,19 @@ const Register = () => {
 
     const { email, password, fullName, image } = data;
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setRegisterError("Please enter a valid email!");
+      return;
+    }
     // Password validation
     if (password.length < 6) {
       setRegisterError("Password should be at least 6 characters long");
       return;
     } else if (!/[A-Z]/.test(password) || !/[a-z]/.test(password)) {
-      setRegisterError("Password should have at least one uppercase and one lowercase letter.");
+      setRegisterError(
+        "Password should have at least one uppercase and one lowercase letter."
+      );
       return;
     }
 
@@ -57,44 +71,49 @@ const Register = () => {
     //     });
     //   });
     createUser(email, password)
-  .then(() => {
-    updateUserProfile(fullName, image)
-      .then(async () => {
-        // ✅ Save user data to MongoDB
-        const userData = {
-          fullName,
-          email,
-          image,
-          careerTrack: data.careerTrack,
-          education: data.education,
-          experience: data.experience,
-        };
-       await fetch("http://localhost:5000/api/user", {
-  method: "PUT",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(userData),
-});
-
-        setSuccess("Registration successful!");
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "You have successfully registered.",
-        }).then(() => {
-          navigate(from);
-        });
+      .then(() => {
+        updateUserProfile(fullName, image)
+          .then(async () => {
+            const userData = {
+              fullName,
+              email,
+              image,
+              careerTrack: data.careerTrack,
+              role:data.role,
+              education: data.education,
+              department: data.department,
+              experience: data.experience,
+            };
+            console.log("from register userdata: ",userData);
+            // await fetch("http://localhost:5000/api/user", {
+            //   method: "PUT",
+            //   headers: { "Content-Type": "application/json" },
+            //   body: JSON.stringify(userData),
+            // });
+            axiosPublic.post("/api/user", userData).then((res) => {
+              console.log(res.data)
+              if (res.data.insertedId) {
+                setSuccess("Registration successful!");
+                Swal.fire({
+                  icon: "success",
+                  title: "Success",
+                  text: "You have successfully registered.",
+                }).then(() => {
+                  navigate(from);
+                });
+              }
+            });
+          })
+          .catch((err) => setRegisterError(err.message));
       })
-      .catch((err) => setRegisterError(err.message));
-  })
-  .catch((err) => {
-    setRegisterError(err.message);
-    Swal.fire({
-      icon: "error",
-      title: "Registration Error",
-      text: err.message,
-    });
-  });
-
+      .catch((err) => {
+        setRegisterError(err.message);
+        Swal.fire({
+          icon: "error",
+          title: "Registration Error",
+          text: err.message,
+        });
+      });
   };
 
   return (
@@ -103,7 +122,9 @@ const Register = () => {
         {/* Right Picture */}
         <div
           className="hidden lg:block lg:w-1/2 bg-cover bg-center"
-          style={{ backgroundImage: `url('https://i.ibb.co/Gfv3cPLV/office-6817959-1280.png')` }}
+          style={{
+            backgroundImage: `url('https://i.ibb.co/Gfv3cPLV/office-6817959-1280.png')`,
+          }}
         ></div>
 
         {/* Form */}
@@ -128,7 +149,9 @@ const Register = () => {
                     className="input input-bordered w-full h-12 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
                   />
                   {errors.fullName && (
-                    <span className="text-red-500 text-sm">This field is required</span>
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
                   )}
                 </div>
 
@@ -143,12 +166,14 @@ const Register = () => {
                   <button
                     type="button"
                     onClick={() => setShowPass(!showPass)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+                    className="absolute right-3 top-12 transform -translate-y-1/2 text-gray-500 focus:outline-none"
                   >
                     {showPass ? <FaEye /> : <FaEyeSlash />}
                   </button>
                   {errors.password && (
-                    <span className="text-red-500 text-sm mt-1">This field is required</span>
+                    <span className="text-red-500 text-sm mt-1">
+                      This field is required
+                    </span>
                   )}
                   {registerError && (
                     <p className="text-red-500 text-sm mt-1">{registerError}</p>
@@ -168,7 +193,25 @@ const Register = () => {
                     <option value="Marketing">Marketing</option>
                   </select>
                   {errors.careerTrack && (
-                    <span className="text-red-500 text-sm">This field is required</span>
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
+                  )}
+                </div>
+                <div className="form-control">
+                  <label className="label">Role</label>
+                  <select
+                    {...formRegister("role", { required: true })}
+                    className="input input-bordered w-full h-12 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
+                  >
+                    <option value="">Select your role</option>
+                    <option value="user">General User</option>
+                    <option value="recruiter">Recruiter</option>
+                  </select>
+                  {errors.role && (
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
                   )}
                 </div>
               </div>
@@ -184,20 +227,38 @@ const Register = () => {
                     className="input input-bordered w-full h-12 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
                   />
                   {errors.email && (
-                    <span className="text-red-500 text-sm">This field is required</span>
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
                   )}
                 </div>
 
                 <div className="form-control">
-                  <label className="label">Education / Department</label>
+                  <label className="label">Education Level</label>
                   <input
                     {...formRegister("education", { required: true })}
                     type="text"
-                    placeholder="BSc in Computer Science"
+                    placeholder="e.g. BSc in Engineering, BBA"
                     className="input input-bordered w-full h-12 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
                   />
                   {errors.education && (
-                    <span className="text-red-500 text-sm">This field is required</span>
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
+                  )}
+                </div>
+                <div className="form-control">
+                  <label className="label">Department / Major Subject</label>
+                  <input
+                    {...formRegister("department", { required: true })}
+                    type="text"
+                    placeholder="e.g. Computer Science and Engineering, Marketing"
+                    className="input input-bordered w-full h-12 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
+                  />
+                  {errors.department && (
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
                   )}
                 </div>
 
@@ -213,14 +274,16 @@ const Register = () => {
                     <option value="Mid">Mid</option>
                   </select>
                   {errors.experience && (
-                    <span className="text-red-500 text-sm">This field is required</span>
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
                   )}
                 </div>
               </div>
             </div>
 
             <div className="form-control mt-6">
-              <button className="btn bg-[#f1b963] text-white w-full py-3 rounded-lg hover:bg-[#e0a94d] transition">
+              <button className="btn bg-[#048998] text-white w-full py-3 rounded-lg hover:bg-[#3bb4c1] transition">
                 Register
               </button>
             </div>
@@ -229,7 +292,10 @@ const Register = () => {
           <div className="text-center mt-6">
             <p className="text-gray-600">
               Already have an account?{" "}
-              <Link to="/login" className="text-[#048998] font-medium hover:underline">
+              <Link
+                to="/login"
+                className="text-[#048998] font-medium hover:underline"
+              >
                 Log in
               </Link>
             </p>

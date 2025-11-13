@@ -23,7 +23,7 @@ export default function Profile() {
             <span className="text-xl">{user?.email}</span>
           </p>
           <div className="card-actions py-8">
-            <Link to="/update-profile">
+            <Link to="/v1/update-profile">
               <button className="btn mr-1 bg-[#f6f5f5] text-[#048998] hover:text-white hover:bg-[#048998] font-semibold text-lg border-0 rounded-md">
                 Update Profile
               </button>
