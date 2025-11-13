@@ -13,7 +13,7 @@ export default function Profile() {
               user?.photoURL || "https://i.ibb.co/sVJ3S81/cat-551554-1280.jpg"
             }
             alt="User Photo"
-            className="rounded-xl"
+            className="rounded-xl w-24 h-24"
           />
         </figure>
         <div className="card-body items-center text-center">
