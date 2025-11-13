@@ -8,7 +8,8 @@ import Error from "../../Error";
 import UpdateProfile from "../pages/Profile/UpdateProfile";
 import Protected from "../layouts/Protected"
 import PrivateRoutes from "./PrivateRoute";
-
+import ViewJobs from "../pages/ViewJobs";
+import { Home } from "../pages/Home";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -26,6 +27,14 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+       {
+        path: "/home",
+        element: <Home></Home>,
+      },
+       {
+        path: "/viewjobs",
+        element: <ViewJobs></ViewJobs>,
       },
      
     ],
