@@ -14,6 +14,7 @@ import JobDetails from "../pages/JobDetails";
 import AddJob from "../pages/AddJob";
 import AllResources from "../pages/LearningResources/AllResources";
 import ResourceRecommendations from "../pages/LearningResources/ResourceRecommendations";
+import JobRecommend from "../pages/JobRecommend";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -45,6 +46,11 @@ export const router = createBrowserRouter([
         path: "/addjob",
         element: <AddJob></AddJob>,
       },
+       {
+  path: "/jobs/recommend/:id",  
+  element: <JobRecommend></JobRecommend>,
+}
+     
     ],
   },
   {
