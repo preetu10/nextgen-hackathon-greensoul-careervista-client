@@ -24,7 +24,7 @@ export default function ResourceRecommendations() {
   const [selectedPlatform, setSelectedPlatform] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
 
-  // Fetch user profile
+
   const { data: userProfile = {}, isLoading: profileLoading } = useQuery({
     queryKey: ["userProfile", user?.email],
     queryFn: async () => {
@@ -33,7 +33,7 @@ export default function ResourceRecommendations() {
     },
   });
 
-  // Fetch all courses
+  
   const { data: allCourses = [], isLoading: coursesLoading } = useQuery({
     queryKey: ["allCourses"],
     queryFn: async () => {
@@ -42,7 +42,7 @@ export default function ResourceRecommendations() {
     },
   });
 
-  // Parse user skills for display
+ 
   const userSkills = React.useMemo(() => {
     if (!userProfile.skills) return [];
     if (Array.isArray(userProfile.skills)) return userProfile.skills;
@@ -53,16 +53,16 @@ export default function ResourceRecommendations() {
     }
   }, [userProfile]);
 
-  // Get user's career track
+ 
   const userCareerTrack = userProfile.careerTrack || "";
 
-  // Calculate recommendations: Match career track with course skills
+ 
   const recommendations = React.useMemo(() => {
     if (!userCareerTrack || !allCourses.length) return [];
 
     const matched = allCourses
       .map((course) => {
-        // Parse course related skills
+        
         let courseSkills = [];
         if (Array.isArray(course.relatedSkills)) {
           courseSkills = course.relatedSkills;
@@ -74,12 +74,12 @@ export default function ResourceRecommendations() {
           }
         }
 
-        // Check if any course skill matches user's career track
+       
         const isMatch = courseSkills.some((skill) => {
           const skillLower = skill.toLowerCase();
           const careerLower = userCareerTrack.toLowerCase();
           
-          // Direct match or partial match
+         
           return (
             skillLower === careerLower ||
             skillLower.includes(careerLower) ||
@@ -89,7 +89,7 @@ export default function ResourceRecommendations() {
 
         if (!isMatch) return null;
 
-        // Find which skills match the career track
+       
         const matchingSkills = courseSkills.filter((skill) => {
           const skillLower = skill.toLowerCase();
           const careerLower = userCareerTrack.toLowerCase();

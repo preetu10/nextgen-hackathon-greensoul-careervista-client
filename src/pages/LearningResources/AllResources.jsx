@@ -41,8 +41,8 @@ const AllResources = () => {
 
   return (
     <div className="min-h-screen bg-[#f6f5f5]">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[#048998] to-[#3bb4c1] text-white py-16 px-6 shadow-xl rounded-2xl">
+      
+      <div className="bg-linear-to-r from-[#048998] to-[#3bb4c1] text-white py-16 px-6 shadow-xl rounded-2xl">
         <div className="max-w-7xl px-6 md:px-12 mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <BookOpen size={48} />
@@ -52,7 +52,7 @@ const AllResources = () => {
             Discover {resources.length} curated courses to accelerate your career growth
           </p>
 
-          {/* Search Bar */}
+          
           <div className="relative max-w-2xl">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input

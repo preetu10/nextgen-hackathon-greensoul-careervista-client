@@ -20,6 +20,8 @@ import AdminRoute from "./AdminRoute";
 import AdminJobsView from "../pages/AdminJobsView";
 import AdminResourcesView from "../pages/AdminResourcesView";
 import CareerRoadmap from "../pages/CareerMap/CareerMap";
+import CVAnalysis from "../pages/CV_Analysis/CVAnalysis";
+import CVAssistant from "../pages/CVAssistant/CVAssistant";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -108,6 +110,14 @@ export const router = createBrowserRouter([
       },{
         path:"get-career-roadmap",
         element:<CareerRoadmap></CareerRoadmap>
+      },
+      {
+        path:"cv-analysis",
+        element:<CVAnalysis></CVAnalysis>
+      },
+      {
+        path:"cv-assistant",
+        element:<CVAssistant></CVAssistant>
       }
     ],
   },{

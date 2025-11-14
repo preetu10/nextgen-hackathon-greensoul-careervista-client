@@ -154,6 +154,51 @@ const Sidebar = () => {
                     Find Relevant Resource
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    to="/v1/get-career-roadmap"
+                    className="text-base"
+                    style={({ isActive }) => {
+                      return {
+                        fontWeight: isActive ? "semibold" : "",
+                        color: isActive ? "white" : "black",
+                        backgroundColor: isActive ? "#1967D2" : "",
+                      };
+                    }}
+                  >
+                    Get Career Roadmap
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/v1/cv-analysis"
+                    className="text-base"
+                    style={({ isActive }) => {
+                      return {
+                        fontWeight: isActive ? "semibold" : "",
+                        color: isActive ? "white" : "black",
+                        backgroundColor: isActive ? "#1967D2" : "",
+                      };
+                    }}
+                  >
+                    CV / Resume Analysis
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/v1/cv-assistant"
+                    className="text-base"
+                    style={({ isActive }) => {
+                      return {
+                        fontWeight: isActive ? "semibold" : "",
+                        color: isActive ? "white" : "black",
+                        backgroundColor: isActive ? "#1967D2" : "",
+                      };
+                    }}
+                  >
+                    CV Assistant
+                  </NavLink>
+                </li>
               </>
             )}
 
