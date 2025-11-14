@@ -125,7 +125,7 @@ export default function AddJob() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await fetch("http://localhost:5000/api/jobs", {
+      const res = await fetch("http://localhost:5000/api/jobs/addjob", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

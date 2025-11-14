@@ -243,7 +243,7 @@ const Sidebar = () => {
               <>
                 <li>
                   <NavLink
-                    to={"/manage-learning-resources"}
+                    to={"/adminviewresources"}
                     className="text-base"
                     style={({ isActive }) => {
                       return {
@@ -258,7 +258,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to={"/manage-job-posts"}
+                    to={"/adminview"}
                     className="text-base"
                     style={({ isActive }) => {
                       return {
@@ -273,7 +273,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/v1/manage-members"
+                    to={"/addjob"}
                     className="text-base"
                     style={({ isActive }) => {
                       return {
@@ -283,7 +283,7 @@ const Sidebar = () => {
                       };
                     }}
                   >
-                    Manage Members
+                    Add Job Post
                   </NavLink>
                 </li>
               </>
