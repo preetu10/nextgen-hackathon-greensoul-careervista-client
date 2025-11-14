@@ -47,7 +47,10 @@ export const router = createBrowserRouter([
         path: "/addjob",
         element: <AddJob></AddJob>,
       },
-      
+//        {
+//   path: "/jobs/recommend/:id",  
+//   element: <JobRecommend></JobRecommend>,
+// }
      
     ],
   },
@@ -81,7 +84,7 @@ export const router = createBrowserRouter([
         element: <ResourceRecommendations></ResourceRecommendations>,
       },
       {
-        path: "jobs/recommend/:id",
+        path: "jobs/recommend/:userId",
         element: <JobRecommend></JobRecommend>,
       },
       {
