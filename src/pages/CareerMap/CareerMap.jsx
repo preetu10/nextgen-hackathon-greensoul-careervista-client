@@ -486,7 +486,7 @@ export default function CareerRoadmap() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f6f5f5] py-4 px-4">
+    <div className="min-h-screen bg-[#f6f5f5] py-4 px-2 md:px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="bg-linear-to-r from-[#048998] to-[#3bb4c1] rounded-2xl shadow-xl p-8 mb-8 text-white">
@@ -616,7 +616,7 @@ export default function CareerRoadmap() {
                   <button
                     type="submit"
                     disabled={isGenerating}
-                    className="btn btn-lg bg-gradient-to-r from-[#048998] to-[#3bb4c1] text-white border-0 hover:shadow-xl disabled:opacity-50 min-w-[250px]"
+                    className="btn btn-lg bg-linear-to-r from-[#048998] to-[#3bb4c1] text-white border-0 hover:shadow-xl disabled:opacity-50 min-w-[250px]"
                   >
                     {isGenerating ? (
                       <>
@@ -636,9 +636,7 @@ export default function CareerRoadmap() {
           </>
         ) : (
           <>
-            {/* Roadmap Display */}
-            <div className="bg-white rounded-xl shadow-md p-8 mb-6">
-              {/* Roadmap Header */}
+            <div className="bg-white rounded-xl shadow-md p-4 md:p-8 mb-6">
               <div className="flex justify-between items-start mb-6 pb-6 border-b">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-800 mb-2">
@@ -655,7 +653,7 @@ export default function CareerRoadmap() {
                     {new Date(generatedRoadmap?.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-col md:flex-row gap-4">
                   <button
                     onClick={handleCopyToClipboard}
                     className="btn btn-sm bg-gray-100 hover:bg-gray-200 border-0 gap-2"
@@ -671,9 +669,8 @@ export default function CareerRoadmap() {
                 </div>
               </div>
 
-              {/* Roadmap Info */}
               <div className="grid md:grid-cols-3 gap-4 mb-8">
-                <div className="p-4 bg-gradient-to-br from-[#048998]/10 to-[#3bb4c1]/10 rounded-lg">
+                <div className="p-4 bg-linear-to-br from-[#048998]/10 to-[#3bb4c1]/10 rounded-lg">
                   <div className="flex items-center gap-2 text-[#048998] mb-1">
                     <FaCalendarAlt />
                     <span className="font-semibold">Timeframe</span>
@@ -682,7 +679,7 @@ export default function CareerRoadmap() {
                     {generatedRoadmap?.timeframe} Months
                   </p>
                 </div>
-                <div className="p-4 bg-gradient-to-br from-[#048998]/10 to-[#3bb4c1]/10 rounded-lg">
+                <div className="p-4 bg-linear-to-br from-[#048998]/10 to-[#3bb4c1]/10 rounded-lg">
                   <div className="flex items-center gap-2 text-[#048998] mb-1">
                     <FaClock />
                     <span className="font-semibold">Weekly Commitment</span>
@@ -691,7 +688,7 @@ export default function CareerRoadmap() {
                     {generatedRoadmap?.learningHoursPerWeek} Hours
                   </p>
                 </div>
-                <div className="p-4 bg-gradient-to-br from-[#048998]/10 to-[#3bb4c1]/10 rounded-lg">
+                <div className="p-4 bg-linear-to-br from-[#048998]/10 to-[#3bb4c1]/10 rounded-lg">
                   <div className="flex items-center gap-2 text-[#048998] mb-1">
                     <FaChartLine />
                     <span className="font-semibold">Total Phases</span>
@@ -702,7 +699,6 @@ export default function CareerRoadmap() {
                 </div>
               </div>
 
-              {/* Phases */}
               {generatedRoadmap?.phases &&
               generatedRoadmap.phases.length > 0 ? (
                 <div className="space-y-6">
@@ -721,12 +717,11 @@ export default function CareerRoadmap() {
                             Duration: {phase.duration}
                           </p>
                         </div>
-                        <span className="px-4 py-2 bg-gradient-to-r from-[#048998] to-[#3bb4c1] text-white rounded-full font-semibold">
+                        <span className="px-4 py-2 bg-linear-to-r from-[#048998] to-[#3bb4c1] text-white rounded-full font-semibold">
                           Phase {index + 1}
                         </span>
                       </div>
 
-                      {/* Topics */}
                       {phase.topics && phase.topics.length > 0 && (
                         <div className="mb-4">
                           <h4 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
@@ -744,7 +739,6 @@ export default function CareerRoadmap() {
                         </div>
                       )}
 
-                      {/* Projects */}
                       {phase.projects && phase.projects.length > 0 && (
                         <div className="mb-4">
                           <h4 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
@@ -765,7 +759,6 @@ export default function CareerRoadmap() {
                         </div>
                       )}
 
-                      {/* Description */}
                       {phase.description && (
                         <p className="text-gray-600 text-sm mt-3 p-3 bg-white rounded-lg">
                           {phase.description}

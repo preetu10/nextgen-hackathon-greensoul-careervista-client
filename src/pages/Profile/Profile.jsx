@@ -173,6 +173,13 @@ export default function Profile() {
               </p>
               {renderSkills(userPro?.skills)}
             </div>
+             {/* tools */}
+            <div className="mb-6">
+              <p className="font-semibold text-gray-700 text-sm mb-2 flex items-center gap-2">
+                <FaTools className="text-[#048998]" /> Tools/ Technologies
+              </p>
+              {renderSkills(userPro?.tools)}
+            </div>
 
             {/* Work Experience */}
             <InfoItem icon={FaBriefcase} label="Work Experience" value={userPro?.job_experience} />

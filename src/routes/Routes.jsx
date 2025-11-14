@@ -16,6 +16,8 @@ import AllResources from "../pages/LearningResources/AllResources";
 import ResourceRecommendations from "../pages/LearningResources/ResourceRecommendations";
 import JobRecommend from "../pages/JobRecommend";
 import CareerRoadmap from "../pages/CareerMap/CareerMap";
+import CVAnalysis from "../pages/CV_Analysis/CVAnalysis";
+import CVAssistant from "../pages/CVAssistant/CVAssistant";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -90,6 +92,14 @@ export const router = createBrowserRouter([
       {
         path:"get-career-roadmap",
         element:<CareerRoadmap></CareerRoadmap>
+      },
+      {
+        path:"cv-analysis",
+        element:<CVAnalysis></CVAnalysis>
+      },
+      {
+        path:"cv-assistant",
+        element:<CVAssistant></CVAssistant>
       }
     ],
   },
