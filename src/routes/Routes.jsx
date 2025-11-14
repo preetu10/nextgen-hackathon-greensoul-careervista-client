@@ -15,6 +15,10 @@ import AddJob from "../pages/AddJob";
 import AllResources from "../pages/LearningResources/AllResources";
 import ResourceRecommendations from "../pages/LearningResources/ResourceRecommendations";
 import JobRecommend from "../pages/JobRecommend";
+import CareerBot from "../pages/CareerBot";
+import AdminRoute from "./AdminRoute";
+import AdminJobsView from "../pages/AdminJobsView";
+import AdminResourcesView from "../pages/AdminResourcesView";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -41,11 +45,22 @@ export const router = createBrowserRouter([
         path: "/all-resources",
         element: <AllResources></AllResources>,
       },
-
-      {
-        path: "/addjob",
+        {
+      path: "adminview",
+        element: <AdminJobsView></AdminJobsView>,
+    },
+    {
+      path: "adminviewresources",
+        element: <AdminResourcesView></AdminResourcesView>,
+    },
+    {
+        
+        path: "addjob",
         element: <AddJob></AddJob>,
-      },
+      
+    }
+
+     
 //        {
 //   path: "/jobs/recommend/:id",  
 //   element: <JobRecommend></JobRecommend>,
@@ -86,6 +101,21 @@ export const router = createBrowserRouter([
         path: "jobs/recommend/:userId",
         element: <JobRecommend></JobRecommend>,
       },
+      {
+        path: "careerbot",
+        element: <CareerBot></CareerBot>,
+      },
     ],
-  },
+  },{
+    path: "admin",
+    element: (
+      <AdminRoute>
+        <Protected></Protected>
+      </AdminRoute>
+    ),
+    errorElement: <Error></Error>,
+    children: [
+   
+  ]
+  }
 ]);
