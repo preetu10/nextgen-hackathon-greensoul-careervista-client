@@ -15,6 +15,7 @@ import AddJob from "../pages/AddJob";
 import AllResources from "../pages/LearningResources/AllResources";
 import ResourceRecommendations from "../pages/LearningResources/ResourceRecommendations";
 import JobRecommend from "../pages/JobRecommend";
+import CareerRoadmap from "../pages/CareerMap/CareerMap";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -86,6 +87,10 @@ export const router = createBrowserRouter([
         path: "jobs/recommend/:userId",
         element: <JobRecommend></JobRecommend>,
       },
+      {
+        path:"get-career-roadmap",
+        element:<CareerRoadmap></CareerRoadmap>
+      }
     ],
   },
 ]);
