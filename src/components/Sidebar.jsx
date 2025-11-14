@@ -154,21 +154,6 @@ const Sidebar = () => {
                     Find Relevant Resource
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink
-                    to="/v1/get-career-roadmap"
-                    className="text-base"
-                    style={({ isActive }) => {
-                      return {
-                        fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
-                      };
-                    }}
-                  >
-                    Get Career Roadmap
-                  </NavLink>
-                </li>
               </>
             )}
 
@@ -213,7 +198,7 @@ const Sidebar = () => {
               <>
                 <li>
                   <NavLink
-                    to={"/manage-learning-resources"}
+                    to={"/adminviewresources"}
                     className="text-base"
                     style={({ isActive }) => {
                       return {
@@ -228,7 +213,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to={"/manage-job-posts"}
+                    to={"/adminview"}
                     className="text-base"
                     style={({ isActive }) => {
                       return {
@@ -243,7 +228,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to="/v1/manage-members"
+                    to={"/addjob"}
                     className="text-base"
                     style={({ isActive }) => {
                       return {
@@ -253,7 +238,7 @@ const Sidebar = () => {
                       };
                     }}
                   >
-                    Manage Members
+                    Add Job Post
                   </NavLink>
                 </li>
               </>
