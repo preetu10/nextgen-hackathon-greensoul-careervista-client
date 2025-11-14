@@ -19,6 +19,7 @@ import CareerBot from "../pages/CareerBot";
 import AdminRoute from "./AdminRoute";
 import AdminJobsView from "../pages/AdminJobsView";
 import AdminResourcesView from "../pages/AdminResourcesView";
+import CareerRoadmap from "../pages/CareerMap/CareerMap";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -104,7 +105,10 @@ export const router = createBrowserRouter([
       {
         path: "careerbot",
         element: <CareerBot></CareerBot>,
-      },
+      },{
+        path:"get-career-roadmap",
+        element:<CareerRoadmap></CareerRoadmap>
+      }
     ],
   },{
     path: "admin",

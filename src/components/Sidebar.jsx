@@ -154,25 +154,10 @@ const Sidebar = () => {
                     Find Relevant Resource
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink
-                    to="/v1/careerbot"
-                    className="text-base"
-                    style={({ isActive }) => {
-                      return {
-                        fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
-                      };
-                    }}
-                  >
-                    Chat With Careerbot
-                  </NavLink>
-                </li>
               </>
             )}
 
-            {/* for member role */}
+            {/* for recruiter role */}
             {userPro?.role === "recruiter" && (
               <>
                 <li>
