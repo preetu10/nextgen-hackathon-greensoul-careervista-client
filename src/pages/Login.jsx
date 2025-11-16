@@ -23,7 +23,6 @@ const Login = () => {
     if (user) navigate("/");
   }, [navigate, user]);
 
-  // 🟢 Email-Password Login
   const onSubmit = async (data) => {
     try {
       const result = await signinUser(data.email, data.password);
@@ -52,7 +51,6 @@ const Login = () => {
     }
   };
 
-
   const handleGoogleSignIn = async () => {
     try {
       const result = await signinWithGoogle();
@@ -73,8 +71,6 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center mt-16 font-Lato min-h-screen">
       <div className="flex w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
-        
-        
         <div
           className="hidden lg:block lg:w-1/2 bg-cover bg-center"
           style={{
@@ -82,7 +78,6 @@ const Login = () => {
           }}
         ></div>
 
-        
         <div className="w-full lg:w-1/2 px-8 py-12">
           <h2 className="text-3xl font-semibold text-center text-gray-700 mb-2">
             Welcome Back!
@@ -91,7 +86,6 @@ const Login = () => {
             Log in to continue exploring
           </p>
 
-          {/* 🌐 Google Login */}
           <button
             onClick={handleGoogleSignIn}
             className="flex items-center justify-center w-full py-3 mb-6 border rounded-lg hover:bg-gray-100 transition"
@@ -102,7 +96,6 @@ const Login = () => {
             </span>
           </button>
 
-          {/* Divider */}
           <div className="flex items-center justify-center my-6">
             <span className="w-1/5 border-b border-gray-300"></span>
             <span className="text-xs text-gray-400 mx-2 uppercase">
@@ -111,7 +104,6 @@ const Login = () => {
             <span className="w-1/5 border-b border-gray-300"></span>
           </div>
 
-          {/* ✉️ Email-Password Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
               <label className="block text-gray-700 font-medium mb-1">
@@ -124,9 +116,7 @@ const Login = () => {
                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  Email is required
-                </p>
+                <p className="text-red-500 text-sm mt-1">Email is required</p>
               )}
             </div>
 
@@ -155,7 +145,6 @@ const Login = () => {
             </button>
           </form>
 
-          {/* 🧾 Register Link */}
           <div className="text-center mt-6">
             <p className="text-gray-600">
               New here?{" "}

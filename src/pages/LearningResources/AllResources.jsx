@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
-import { Search, BookOpen, ExternalLink, Filter } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import useAxiosPublic from '../../customHooks/useAxiosPublic';
+import React, { useState } from "react";
+import { Search, BookOpen, ExternalLink, Filter } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../customHooks/useAxiosPublic";
 
 const AllResources = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterCost, setFilterCost] = useState('All');
-  const [filterPlatform, setFilterPlatform] = useState('All');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterCost, setFilterCost] = useState("All");
+  const [filterPlatform, setFilterPlatform] = useState("All");
 
   const axiosPublic = useAxiosPublic();
 
-  const { isPending, error, data: resources = [] } = useQuery({
+  const {
+    isPending,
+    error,
+    data: resources = [],
+  } = useQuery({
     queryKey: ["allResources"],
     queryFn: async () => {
       const res = await axiosPublic.get("/api/get-all-resources");
@@ -19,29 +23,37 @@ const AllResources = () => {
   });
 
   if (isPending) {
-    return <div className="text-center py-10 text-lg text-gray-600">Loading resources...</div>;
+    return (
+      <div className="text-center py-10 text-lg text-gray-600">
+        Loading resources...
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center py-10 text-red-500">Failed to load resources.</div>;
+    return (
+      <div className="text-center py-10 text-red-500">
+        Failed to load resources.
+      </div>
+    );
   }
 
-  const platforms = ['All', ...new Set(resources.map(c => c.platform))];
+  const platforms = ["All", ...new Set(resources.map((c) => c.platform))];
 
-  const filteredResources = resources.filter(resource => {
+  const filteredResources = resources.filter((resource) => {
     const matchesSearch =
       resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      resource.relatedSkills?.some(skill =>
+      resource.relatedSkills?.some((skill) =>
         skill.toLowerCase().includes(searchTerm.toLowerCase())
       );
-    const matchesCost = filterCost === 'All' || resource.cost === filterCost;
-    const matchesPlatform = filterPlatform === 'All' || resource.platform === filterPlatform;
+    const matchesCost = filterCost === "All" || resource.cost === filterCost;
+    const matchesPlatform =
+      filterPlatform === "All" || resource.platform === filterPlatform;
     return matchesSearch && matchesCost && matchesPlatform;
   });
 
   return (
     <div className="min-h-screen bg-[#f6f5f5]">
-      
       <div className="bg-linear-to-r from-[#048998] to-[#3bb4c1] text-white py-16 px-6 shadow-xl rounded-2xl">
         <div className="max-w-7xl px-6 md:px-12 mx-auto">
           <div className="flex items-center gap-3 mb-4">
@@ -49,12 +61,15 @@ const AllResources = () => {
             <h1 className="text-5xl font-bold">Course Collection</h1>
           </div>
           <p className="text-xl text-cyan-50 mb-8">
-            Discover {resources.length} curated courses to accelerate your career growth
+            Discover {resources.length} curated courses to accelerate your
+            career growth
           </p>
 
-          
           <div className="relative max-w-2xl">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
             <input
               type="text"
               placeholder="Search courses or skills..."
@@ -66,7 +81,6 @@ const AllResources = () => {
         </div>
       </div>
 
-      {/* Filters */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:items-center mb-8">
           <div className="flex items-center gap-2">
@@ -103,7 +117,6 @@ const AllResources = () => {
           </span>
         </div>
 
-        {/* Resource Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredResources.map((course, index) => (
             <div
@@ -116,15 +129,16 @@ const AllResources = () => {
                   alt={course.title}
                   className="w-full h-full object-cover opacity-90 group-hover:scale-110 transition-transform duration-300"
                   onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/240x135/048998/ffffff?text=Course';
+                    e.target.src =
+                      "https://via.placeholder.com/240x135/048998/ffffff?text=Course";
                   }}
                 />
                 <div className="absolute top-3 right-3">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      course.cost === 'Free'
-                        ? 'bg-green-500 text-white'
-                        : 'bg-yellow-400 text-gray-800'
+                      course.cost === "Free"
+                        ? "bg-green-500 text-white"
+                        : "bg-yellow-400 text-gray-800"
                     }`}
                   >
                     {course.cost}
@@ -170,7 +184,9 @@ const AllResources = () => {
 
         {filteredResources.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-xl text-gray-500">No courses found matching your filters.</p>
+            <p className="text-xl text-gray-500">
+              No courses found matching your filters.
+            </p>
           </div>
         )}
       </div>

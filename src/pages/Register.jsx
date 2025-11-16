@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useAxiosPublic from "../customHooks/useAxiosPublic";
-// import { toast } from "react-toastify";
 
 const Register = () => {
   const { createUser, updateUserProfile } = useContext(AuthContext);
@@ -48,7 +47,7 @@ const Register = () => {
     setSuccess("");
 
     const { email, password, fullName, image } = data;
-
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setRegisterError("Please enter a valid email!");
@@ -65,29 +64,6 @@ const Register = () => {
       return;
     }
 
-    // createUser(email, password)
-    //   .then(() => {
-    //     updateUserProfile(fullName, image)
-    //       .then(() => {
-    //         setSuccess("Registration successful!");
-    //         Swal.fire({
-    //           icon: "success",
-    //           title: "Success",
-    //           text: "You have successfully registered.",
-    //         }).then(() => {
-    //           navigate(from);
-    //         });
-    //       })
-    //       .catch((err) => setRegisterError(err.message));
-    //   })
-    //   .catch((err) => {
-    //     setRegisterError(err.message);
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "Registration Error",
-    //       text: err.message,
-    //     });
-    //   });
     createUser(email, password)
       .then(() => {
         updateUserProfile(fullName, image)
@@ -103,11 +79,6 @@ const Register = () => {
               experience: data.experience,
             };
             console.log("from register userdata: ", userData);
-            // await fetch("http://localhost:5000/api/user", {
-            //   method: "PUT",
-            //   headers: { "Content-Type": "application/json" },
-            //   body: JSON.stringify(userData),
-            // });
             axiosPublic.post("/api/user", userData).then((res) => {
               console.log(res.data);
               if (res.data.insertedId) {
@@ -137,7 +108,6 @@ const Register = () => {
   return (
     <div className="flex justify-center items-center min-h-screen font-Lato ">
       <div className="flex w-full max-w-6xl bg-white rounded-2xl shadow-lg overflow-hidden">
-        {/* Right Picture */}
         <div
           className="hidden lg:block lg:w-1/2 bg-cover bg-center"
           style={{

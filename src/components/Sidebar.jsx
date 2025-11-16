@@ -26,7 +26,6 @@ const Sidebar = () => {
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
         <div className="drawer-content flex flex-col items-start justify-left">
-          {/* Page content here */}
           <label
             htmlFor="my-drawer-2"
             className="btn m-4 drawer-button lg:hidden text-left"
@@ -47,7 +46,7 @@ const Sidebar = () => {
           </label>
         </div>
 
-        <div className="drawer-side z-[20]">
+        <div className="drawer-side z-20">
           <label
             htmlFor="my-drawer-2"
             aria-label="close sidebar"
@@ -58,7 +57,6 @@ const Sidebar = () => {
             className="menu py-8 px-6 w-80 min-h-screen text-base-content"
             style={{ backgroundColor: "#f6f5f5" }}
           >
-            {/* Sidebar content here */}
             {/* common links */}
             <li>
               <NavLink
@@ -199,11 +197,26 @@ const Sidebar = () => {
                     CV Assistant
                   </NavLink>
                 </li>
+                 <li>
+                  <NavLink
+                    to="/v1/careerbot"
+                    className="text-base"
+                    style={({ isActive }) => {
+                      return {
+                        fontWeight: isActive ? "semibold" : "",
+                        color: isActive ? "white" : "black",
+                        backgroundColor: isActive ? "#1967D2" : "",
+                      };
+                    }}
+                  >
+                    Chat with Careerbot
+                  </NavLink>
+                </li>
               </>
             )}
 
             {/* for recruiter role */}
-            {userPro?.role === "recruiter" && (
+            {/* {userPro?.role === "recruiter" && (
               <>
                 <li>
                   <NavLink
@@ -236,7 +249,7 @@ const Sidebar = () => {
                   </NavLink>
                 </li>
               </>
-            )}
+            )} */}
 
             {/* for admin role */}
             {userPro?.role === "admin" && (

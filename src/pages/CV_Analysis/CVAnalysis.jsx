@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import useAuth from "../../customHooks/useAuth";
 import useAxiosSecure from "../../customHooks/useAxiosSecure";
-import { 
-  FaUpload, 
-  FaCheckCircle, 
-  FaSpinner, 
+import {
+  FaUpload,
+  FaCheckCircle,
+  FaSpinner,
   FaFilePdf,
   FaRobot,
   FaBrain,
   FaTools,
-  FaChartLine
+  FaChartLine,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 export default function CVAnalysis() {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
@@ -55,7 +55,7 @@ export default function CVAnalysis() {
       formData.append("email", user?.email);
 
       const response = await axiosSecure.post("/api/cv-analyze", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       console.log("CV Analysis Response:", response.data);
@@ -66,7 +66,7 @@ export default function CVAnalysis() {
           extractedTools: response.data.data.extractedTools || [],
           careerTrack: response.data.data.careerTrack || [],
           cvPath: response.data.data.cvPath || "",
-          fileName: response.data.data.fileName || ""
+          fileName: response.data.data.fileName || "",
         };
 
         setAnalysisResult(analysisData);
@@ -100,7 +100,7 @@ export default function CVAnalysis() {
         {
           skills: analysisResult.extractedSkills,
           tools: analysisResult.extractedTools,
-          careerTrack:selectedCareerTrack
+          careerTrack: selectedCareerTrack,
         }
       );
 
@@ -120,28 +120,32 @@ export default function CVAnalysis() {
   return (
     <div className="min-h-screen bg-[#f6f5f5] py-8 px-4">
       <div className="max-w-5xl mx-auto">
-
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <FaBrain className="text-5xl text-[#048998]" />
-            <h1 className="text-4xl font-bold text-gray-800">AI-Powered CV Analyzer</h1>
+            <h1 className="text-4xl font-bold text-gray-800">
+              AI-Powered CV Analyzer
+            </h1>
           </div>
           <p className="text-gray-600 text-lg">
-            Upload your CV and let AI extract your skills, tools, and recommend career tracks
+            Upload your CV and let AI extract your skills, tools, and recommend
+            career tracks
           </p>
         </div>
 
-        {/* Upload Section */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
           <div className="flex flex-col items-center">
-            <label htmlFor="cv-upload" className="w-full max-w-md cursor-pointer">
-              
+            <label
+              htmlFor="cv-upload"
+              className="w-full max-w-md cursor-pointer"
+            >
               <div className="border-4 border-dashed border-[#3bb4c1] rounded-xl p-12 text-center hover:border-[#048998] transition-colors">
                 {selectedFile ? (
                   <div className="flex flex-col items-center gap-3">
                     <FaFilePdf className="text-6xl text-red-500" />
-                    <p className="font-semibold text-gray-800 text-lg">{selectedFile.name}</p>
+                    <p className="font-semibold text-gray-800 text-lg">
+                      {selectedFile.name}
+                    </p>
                     <p className="text-sm text-gray-500">
                       {(selectedFile.size / 1024).toFixed(2)} KB
                     </p>
@@ -162,8 +166,12 @@ export default function CVAnalysis() {
                 ) : (
                   <div>
                     <FaUpload className="text-6xl text-[#048998] mx-auto mb-4" />
-                    <p className="text-xl font-semibold text-gray-700 mb-2">Click to upload your CV</p>
-                    <p className="text-sm text-gray-500">PDF format only, max 5MB</p>
+                    <p className="text-xl font-semibold text-gray-700 mb-2">
+                      Click to upload your CV
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      PDF format only, max 5MB
+                    </p>
                   </div>
                 )}
               </div>
@@ -181,43 +189,53 @@ export default function CVAnalysis() {
               <button
                 onClick={handleAnalyzeCV}
                 disabled={uploading}
-                className="mt-6 px-8 py-4 bg-gradient-to-r from-[#048998] to-[#3bb4c1] text-white font-semibold text-lg rounded-lg shadow-lg hover:shadow-xl transition-all flex items-center gap-3 disabled:opacity-50"
+                className="mt-6 px-8 py-4 bg-linear-to-r from-[#048998] to-[#3bb4c1] text-white font-semibold text-lg rounded-lg shadow-lg hover:shadow-xl transition-all flex items-center gap-3 disabled:opacity-50"
               >
-                {uploading ? (<><FaSpinner className="animate-spin" /> Analyzing CV...</>) : (<><FaRobot /> Analyze with AI</>)}
+                {uploading ? (
+                  <>
+                    <FaSpinner className="animate-spin" /> Analyzing CV...
+                  </>
+                ) : (
+                  <>
+                    <FaRobot /> Analyze with AI
+                  </>
+                )}
               </button>
             )}
           </div>
         </div>
 
-        {/* Loading Animation */}
         {analyzing && (
           <div className="bg-white rounded-2xl shadow-lg p-8 mb-6">
             <div className="flex items-center justify-center gap-4">
               <FaSpinner className="animate-spin text-4xl text-[#048998]" />
               <div>
-                <p className="text-xl font-semibold text-gray-800">AI is analyzing your CV...</p>
-                <p className="text-gray-600">Extracting skills, tools, and matching career tracks</p>
+                <p className="text-xl font-semibold text-gray-800">
+                  AI is analyzing your CV...
+                </p>
+                <p className="text-gray-600">
+                  Extracting skills, tools, and matching career tracks
+                </p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Results */}
         {analysisResult && !analyzing && (
           <div className="space-y-6">
-
-            {/* Success */}
             <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 flex items-center gap-4">
               <FaCheckCircle className="text-4xl text-green-500" />
               <div>
-                <p className="text-xl font-semibold text-green-800">Analysis Complete!</p>
+                <p className="text-xl font-semibold text-green-800">
+                  Analysis Complete!
+                </p>
                 <p className="text-green-700">
-                  Found {analysisResult?.extractedSkills?.length} skills and {analysisResult?.extractedTools?.length} tools
+                  Found {analysisResult?.extractedSkills?.length} skills and{" "}
+                  {analysisResult?.extractedTools?.length} tools
                 </p>
               </div>
             </div>
 
-            {/* Skills */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <div className="flex items-center gap-3 mb-6">
                 <FaBrain className="text-3xl text-[#048998]" />
@@ -229,7 +247,10 @@ export default function CVAnalysis() {
               {analysisResult?.extractedSkills?.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
                   {analysisResult.extractedSkills.map((skill, idx) => (
-                    <span key={idx} className="bg-gradient-to-r from-[#048998] to-[#3bb4c1] text-white px-4 py-2 rounded-full text-sm font-medium shadow">
+                    <span
+                      key={idx}
+                      className="bg-linear-to-r from-[#048998] to-[#3bb4c1] text-white px-4 py-2 rounded-full text-sm font-medium shadow"
+                    >
                       {skill}
                     </span>
                   ))}
@@ -239,19 +260,22 @@ export default function CVAnalysis() {
               )}
             </div>
 
-            {/* Tools */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <div className="flex items-center gap-3 mb-6">
                 <FaTools className="text-3xl text-[#048998]" />
                 <h2 className="text-2xl font-bold text-gray-800">
-                  Tools & Technologies ({analysisResult?.extractedTools?.length})
+                  Tools & Technologies ({analysisResult?.extractedTools?.length}
+                  )
                 </h2>
               </div>
 
               {analysisResult?.extractedTools?.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
                   {analysisResult?.extractedTools?.map((tool, idx) => (
-                    <span key={idx} className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-medium border-2 border-gray-300">
+                    <span
+                      key={idx}
+                      className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-medium border-2 border-gray-300"
+                    >
                       {tool}
                     </span>
                   ))}
@@ -261,11 +285,12 @@ export default function CVAnalysis() {
               )}
             </div>
 
-            {/* Career Tracks */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <div className="flex items-center gap-3 mb-6">
                 <FaChartLine className="text-3xl text-[#048998]" />
-                <h2 className="text-2xl font-bold text-gray-800">Career Track Recommendations</h2>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  Career Track Recommendations
+                </h2>
               </div>
 
               {analysisResult?.careerTrack?.length > 0 ? (
@@ -284,11 +309,9 @@ export default function CVAnalysis() {
                           <h3 className="text-lg font-semibold text-gray-800">
                             {match}
                           </h3>
-                        
                         </div>
                         <p className="text-gray-600 text-sm mb-3">
-                          {match.reason ||
-                            `Matched related skills`}
+                          {match.reason || `Matched related skills`}
                         </p>
 
                         <div className="flex flex-wrap gap-1">
@@ -305,16 +328,13 @@ export default function CVAnalysis() {
                     ))}
                   </div>
 
-                  {/* SELECT CAREER */}
                   <div className="border-t-2 border-gray-200 pt-6">
                     <label className="block text-gray-700 font-semibold mb-3">
                       Select Your Primary Career Track:
                     </label>
                     <select
                       value={selectedCareerTrack}
-                      onChange={(e) =>
-                        setSelectedCareerTrack(e.target.value)
-                      }
+                      onChange={(e) => setSelectedCareerTrack(e.target.value)}
                       className="w-full px-4 py-3 border-2 border-[#3bb4c1] rounded-lg bg-white text-gray-800"
                     >
                       <option value="">Choose a career track...</option>
@@ -336,7 +356,6 @@ export default function CVAnalysis() {
               )}
             </div>
 
-            {/* Buttons */}
             {analysisResult?.careerTrack?.length > 0 && (
               <div className="flex justify-center gap-4">
                 <button
@@ -353,7 +372,7 @@ export default function CVAnalysis() {
                 <button
                   onClick={handleSaveToProfile}
                   disabled={!selectedCareerTrack}
-                  className="px-12 py-4 bg-gradient-to-r from-[#048998] to-[#3bb4c1] text-white font-bold text-xl rounded-lg shadow-lg disabled:opacity-50"
+                  className="px-12 py-4 bg-linear-to-r from-[#048998] to-[#3bb4c1] text-white font-bold text-xl rounded-lg shadow-lg disabled:opacity-50"
                 >
                   Save to Profile
                 </button>

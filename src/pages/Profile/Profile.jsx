@@ -47,7 +47,6 @@ export default function Profile() {
     </div>
   );
 
-   // Render Skills
   const renderSkills = (skills) => {
     let skillsArray = [];
     if (Array.isArray(skills)) skillsArray = skills;
@@ -59,7 +58,8 @@ export default function Profile() {
       }
     }
 
-    if (skillsArray.length === 0) return <p className="text-gray-500">No skills added</p>;
+    if (skillsArray.length === 0)
+      return <p className="text-gray-500">No skills added</p>;
 
     return (
       <div className="flex flex-wrap gap-2">
@@ -75,7 +75,6 @@ export default function Profile() {
     );
   };
 
-  // Render Projects
   const renderProjects = (projects) => {
     let projectsArray = [];
     if (Array.isArray(projects)) projectsArray = projects;
@@ -87,7 +86,8 @@ export default function Profile() {
       }
     }
 
-    if (projectsArray.length === 0) return <p className="text-gray-500">No projects added</p>;
+    if (projectsArray.length === 0)
+      return <p className="text-gray-500">No projects added</p>;
 
     return (
       <div className="grid md:grid-cols-2 gap-4">
@@ -97,9 +97,13 @@ export default function Profile() {
             className="border border-gray-200 rounded-xl p-5 shadow hover:shadow-lg transition-shadow bg-white flex flex-col justify-between"
           >
             <div>
-              <h3 className="font-semibold text-lg text-gray-800 mb-2">{project.title}</h3>
+              <h3 className="font-semibold text-lg text-gray-800 mb-2">
+                {project.title}
+              </h3>
               {project.description && (
-                <p className="text-gray-600 mb-3 text-sm">{project.description}</p>
+                <p className="text-gray-600 mb-3 text-sm">
+                  {project.description}
+                </p>
               )}
             </div>
             <div className="flex flex-wrap gap-3 mt-2">
@@ -134,12 +138,14 @@ export default function Profile() {
     <div className="min-h-screen bg-[#f6f5f5] py-4 px-2">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          {/* Header */}
           <div className="bg-linear-to-r from-[#048998] to-[#026873] h-32 relative">
             <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
               <div className="relative">
                 <img
-                  src={user?.photoURL || "https://i.ibb.co/sVJ3S81/cat-551554-1280.jpg"}
+                  src={
+                    user?.photoURL ||
+                    "https://i.ibb.co/sVJ3S81/cat-551554-1280.jpg"
+                  }
                   alt="User"
                   className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
                 />
@@ -148,9 +154,7 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Info Section */}
           <div className="pt-20 pb-6 px-6">
-            {/* Name & Email */}
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-800 mb-2">
                 {user?.displayName}
@@ -158,22 +162,36 @@ export default function Profile() {
               <p className="text-gray-600">{user?.email}</p>
             </div>
 
-            {/* Grid Info */}
             <div className="grid md:grid-cols-2 gap-4 mb-8">
-              <InfoItem icon={FaGraduationCap} label="Education Level" value={userPro?.education} />
-              <InfoItem icon={FaBook} label="Department / Major" value={userPro?.department} />
-              <InfoItem icon={FaBriefcase} label="Experience Level" value={userPro?.experience} />
-              <InfoItem icon={FaRoad} label="Career Track" value={userPro?.careerTrack} />
+              <InfoItem
+                icon={FaGraduationCap}
+                label="Education Level"
+                value={userPro?.education}
+              />
+              <InfoItem
+                icon={FaBook}
+                label="Department / Major"
+                value={userPro?.department}
+              />
+              <InfoItem
+                icon={FaBriefcase}
+                label="Experience Level"
+                value={userPro?.experience}
+              />
+              <InfoItem
+                icon={FaRoad}
+                label="Career Track"
+                value={userPro?.careerTrack}
+              />
             </div>
 
-            {/* Skills */}
             <div className="mb-6">
               <p className="font-semibold text-gray-700 text-sm mb-2 flex items-center gap-2">
                 <FaTools className="text-[#048998]" /> Skills
               </p>
               {renderSkills(userPro?.skills)}
             </div>
-             {/* tools */}
+
             <div className="mb-6">
               <p className="font-semibold text-gray-700 text-sm mb-2 flex items-center gap-2">
                 <FaTools className="text-[#048998]" /> Tools/ Technologies
@@ -181,10 +199,12 @@ export default function Profile() {
               {renderSkills(userPro?.tools)}
             </div>
 
-            {/* Work Experience */}
-            <InfoItem icon={FaBriefcase} label="Work Experience" value={userPro?.job_experience} />
+            <InfoItem
+              icon={FaBriefcase}
+              label="Work Experience"
+              value={userPro?.job_experience}
+            />
 
-            {/* Projects */}
             <div className="mt-6 mb-6">
               <p className="font-semibold text-gray-700 text-sm mb-2 flex items-center gap-2">
                 <FaProjectDiagram className="text-[#048998]" /> Projects
@@ -192,14 +212,15 @@ export default function Profile() {
               {renderProjects(userPro?.projects)}
             </div>
 
-            {/* CV / Resume */}
             {userPro?.cvPath && (
               <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/50 transition-colors">
                 <div className="shrink-0 w-10 h-10 bg-[#048998] text-white rounded-full flex items-center justify-center mt-0.5">
                   <FaFilePdf className="text-lg" />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-gray-700 text-sm mb-1">CV / Resume</p>
+                  <p className="font-semibold text-gray-700 text-sm mb-1">
+                    CV / Resume
+                  </p>
                   <Link
                     to={userPro.cvPath}
                     target="_blank"
@@ -212,7 +233,6 @@ export default function Profile() {
               </div>
             )}
 
-            {/* Action Button */}
             <div className="flex justify-center pt-6">
               <Link to="/v1/update-profile">
                 <button className="px-8 py-3 bg-linear-to-r from-[#048998] to-[#026873] text-white font-semibold text-lg rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">

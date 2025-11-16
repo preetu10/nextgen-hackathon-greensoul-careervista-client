@@ -5,49 +5,6 @@ import { AuthContext } from "../FirebaseProvider/FirebaseProvider";
 
 const NavBar = () => {
   const { logOut, user } = useContext(AuthContext);
-//   const links = (
-//     <>
-//       <li className="text-lg font-medium">
-//         <NavLink
-//           to="/"
-//           style={({ isActive }) => {
-//             return {
-//               fontWeight: isActive ? "semibold" : "",
-//               color: isActive ? "#048998" : "#3bb4c1",
-//             };
-//           }}
-//         >
-//           Home
-//         </NavLink>
-//       </li>
-//       <li className="text-lg font-medium">
-//         <NavLink
-//           to="/about"
-//           style={({ isActive }) => {
-//             return {
-//               fontWeight: isActive ? "semibold" : "",
-//               color: isActive ? "#048998" : "#3bb4c1",
-//             };
-//           }}
-//         >
-//           About Us
-//         </NavLink>
-//       </li>
-//       <li className="text-lg font-medium">
-//         <NavLink
-//           to="/learning-resources"
-//           style={({ isActive }) => {
-//             return {
-//               fontWeight: isActive ? "semibold" : "",
-//               color: isActive ? "#048998" : "#3bb4c1",
-//             };
-//           }}
-//         >
-//           Learning Resources
-//         </NavLink>
-//       </li>
-//     </>
-//   );
 
   return (
    
@@ -71,12 +28,7 @@ const NavBar = () => {
               />{" "}
             </svg>
           </div>
-          {/* <ul
-            tabIndex="-1"
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-          >
-            {links}
-          </ul> */}
+         
         </div>
        <div className="flex items-center justify-center">
          <img
@@ -88,7 +40,7 @@ const NavBar = () => {
        </div>
       </div>
       <div className="navbar-center hidden lg:flex">
-        {/* <ul className="menu menu-horizontal px-1">{links}</ul> */}
+      
       </div>
       {user ? (
         <div className="navbar-end">
