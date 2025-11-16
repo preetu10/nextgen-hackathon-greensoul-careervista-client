@@ -27,7 +27,7 @@ const ViewJobs = () => {
     AOS.init({ duration: 800, easing: "ease-in-out", once: true });
   }, []);
 
-  // Fetch jobs with applied filters
+
   const fetchJobs = async (filterParams = {}) => {
     setLoading(true);
     try {
@@ -46,19 +46,19 @@ const ViewJobs = () => {
     }
   };
 
-  // Initial fetch
+ 
   useEffect(() => {
     fetchJobs();
   }, []);
 
-  // Handle filter button click
+ 
   const handleApplyFilters = () => {
     setAppliedFilters(filters);
     setCurrentPage(1);
     fetchJobs(filters);
   };
 
-  // Handle clear filters
+  
   const handleClearFilters = () => {
     const emptyFilters = { title: "", location: "", jobType: "" };
     setFilters(emptyFilters);
@@ -67,7 +67,7 @@ const ViewJobs = () => {
     fetchJobs();
   };
 
-  // Check if any filters are active
+ 
   const hasActiveFilters = filters.title || filters.location || filters.jobType;
 
   // Pagination
@@ -117,7 +117,7 @@ const ViewJobs = () => {
 
   return (
     <div className="min-h-screen py-10" style={{ background: "#f6f5f5" }}>
-      {/* Title */}
+     
       <h1
         className="text-4xl font-semibold text-center mb-10"
         style={{ color: "#048998" }}
@@ -126,7 +126,7 @@ const ViewJobs = () => {
         Explore <span style={{ color: "#3bb4c1" }}>Career Opportunities</span>
       </h1>
 
-      {/* Filter Bar */}
+     
       <div
         className="bg-white shadow-md rounded-xl mx-6 lg:mx-20 mb-10 p-6"
         data-aos="fade-up"
@@ -190,7 +190,7 @@ const ViewJobs = () => {
           </div>
         </div>
 
-        {/* Filter Action Buttons */}
+        
         <div className="flex gap-3">
           <button
             onClick={handleApplyFilters}
@@ -231,7 +231,7 @@ const ViewJobs = () => {
           )}
         </div>
 
-        {/* Active Filters Display */}
+       
         {(appliedFilters.title || appliedFilters.location || appliedFilters.jobType) && (
           <div className="mt-4 flex flex-wrap gap-2">
             <span className="text-sm text-gray-600">Active filters:</span>
@@ -254,7 +254,7 @@ const ViewJobs = () => {
         )}
       </div>
 
-      {/* Job Cards */}
+    
       {jobs.length === 0 ? (
         <div className="text-center text-gray-500" data-aos="fade-up">
           <p className="text-xl">No jobs match your filters.</p>
@@ -271,7 +271,7 @@ const ViewJobs = () => {
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
-                {/* Image Section */}
+             
                 {job.image && (
                   <div
                     className="h-48 bg-cover bg-center relative"
@@ -290,7 +290,7 @@ const ViewJobs = () => {
                   </div>
                 )}
 
-                {/* Content Section */}
+             
                 <div className="p-6">
                   {!job.image && (
                     <>
@@ -314,7 +314,7 @@ const ViewJobs = () => {
                         color: "#048998",
                       }}
                     >
-                      📍 {job.location}
+                       {job.location}
                     </span>
                     <span
                       className="px-3 py-1 rounded-full text-xs font-medium"
@@ -323,7 +323,7 @@ const ViewJobs = () => {
                         color: "#048998",
                       }}
                     >
-                      💼 {job.jobType}
+                       {job.jobType}
                     </span>
                     <span
                       className="px-3 py-1 rounded-full text-xs font-medium"
@@ -332,7 +332,7 @@ const ViewJobs = () => {
                         color: "#048998",
                       }}
                     >
-                      ⏱️ {job.experience}
+                       {job.experience}
                     </span>
                   </div>
 

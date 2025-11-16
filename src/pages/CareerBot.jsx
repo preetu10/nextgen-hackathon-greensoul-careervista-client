@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 
 export default function CareerBot() {
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello! I'm CareerBot. How can I help you today?" }
+    {
+      role: "assistant",
+      content: "Hello! I'm CareerBot. How can I help you today?",
+    },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,7 +16,6 @@ export default function CareerBot() {
 
     const userMsg = { role: "user", content: input };
 
-    // Add user message to the chat UI
     setMessages((prev) => [...prev, userMsg]);
     const userQuestion = input;
     setInput("");
@@ -23,32 +25,30 @@ export default function CareerBot() {
       const res = await fetch("http://localhost:5000/api/careerbot/ask", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question: userQuestion })
+        body: JSON.stringify({ question: userQuestion }),
       });
 
       const data = await res.json();
 
       const botMsg = {
         role: "assistant",
-        content: data.answer || "Sorry, I couldn't generate a response."
+        content: data.answer || "Sorry, I couldn't generate a response.",
       };
 
-      // Add bot message
       setMessages((prev) => [...prev, botMsg]);
     } catch (err) {
       console.error("Chatbot error:", err);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Error contacting the AI server." }
+        { role: "assistant", content: "Error contacting the AI server." },
       ]);
     } finally {
       setLoading(false);
     }
   };
 
-  // auto-scroll to bottom
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
@@ -62,12 +62,11 @@ export default function CareerBot() {
         CareerBot Assistant
       </h1>
 
-      {/* Chat Box */}
       <div
         className="w-full max-w-2xl p-4 rounded-lg shadow-lg overflow-y-auto second-color"
         style={{
           height: "70vh",
-          background: "#e3e3e3"
+          background: "#e3e3e3",
         }}
       >
         {messages.map((msg, index) => (
@@ -104,7 +103,6 @@ export default function CareerBot() {
         <div ref={bottomRef}></div>
       </div>
 
-      {/* Input Box */}
       <div className="w-full max-w-2xl mt-4 flex">
         <input
           type="text"

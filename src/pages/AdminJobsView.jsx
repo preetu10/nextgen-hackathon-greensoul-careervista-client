@@ -6,7 +6,7 @@ export default function AdminJobsView() {
 
   const fetchJobs = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/jobs/all"); // API endpoint
+      const res = await fetch("http://localhost:5000/api/jobs/all");
       const data = await res.json();
       setJobs(data.data || []);
     } catch (err) {
@@ -21,22 +21,25 @@ export default function AdminJobsView() {
   }, []);
 
   return (
-    <div className="p-6 min-h-screen" style={{ background: "#f6f5f5" }}> {/* first-color */}
-      <h1 className="text-3xl font-bold mb-4" style={{ color: "#048998" }}>All Jobs (Admin)</h1> {/* fourth-color */}
-
+    <div className="p-6 min-h-screen" style={{ background: "#f6f5f5" }}>
+      {" "}
+      {/* first-color */}
+      <h1 className="text-3xl font-bold mb-4" style={{ color: "#048998" }}>
+        All Jobs (Admin)
+      </h1>{" "}
+      {/* fourth-color */}
       {loading ? (
         <span
           className="loading loading-spinner loading-lg"
-          style={{ color: "#3bb4c1" }} /* third-color */
+          style={{ color: "#3bb4c1" }}
         ></span>
       ) : (
         <div
           className="overflow-x-auto shadow-lg rounded-lg p-4"
-          style={{ background: "#e3e3e3" }} /* second-color */
+          style={{ background: "#e3e3e3" }}
         >
           <table className="table table-zebra w-full">
-            {/* Table Head */}
-            <thead style={{ background: "#048998", color: "#fff" }}> {/* fourth-color */}
+            <thead style={{ background: "#048998", color: "#fff" }}>
               <tr>
                 <th>#</th>
                 <th>Image</th>
@@ -51,7 +54,6 @@ export default function AdminJobsView() {
               </tr>
             </thead>
 
-            {/* Table Body */}
             <tbody>
               {jobs.map((job, index) => (
                 <tr key={job._id}>
@@ -71,7 +73,10 @@ export default function AdminJobsView() {
                   <td className="max-w-[180px]">
                     <div className="flex flex-wrap gap-1">
                       {job.skills?.map((s, i) => (
-                        <span key={i} className="badge badge-outline badge-primary">
+                        <span
+                          key={i}
+                          className="badge badge-outline badge-primary"
+                        >
                           {s}
                         </span>
                       ))}

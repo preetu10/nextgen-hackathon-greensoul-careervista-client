@@ -20,7 +20,7 @@ export default function ResourceRecommendations() {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const [selectedFilter, setSelectedFilter] = useState("all"); // all, free, paid
+  const [selectedFilter, setSelectedFilter] = useState("all"); 
   const [selectedPlatform, setSelectedPlatform] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
 
@@ -107,17 +107,17 @@ export default function ResourceRecommendations() {
           matchCount: matchingSkills.length,
         };
       })
-      .filter(Boolean); // Remove null entries
+      .filter(Boolean); 
 
-    // Sort by number of matching skills
+    
     return matched.sort((a, b) => b.matchCount - a.matchCount);
   }, [userCareerTrack, allCourses]);
 
-  // Apply filters
+ 
   const filteredRecommendations = React.useMemo(() => {
     let filtered = [...recommendations];
 
-    // Cost filter
+   
     if (selectedFilter === "free") {
       filtered = filtered.filter((course) =>
         course.cost?.toLowerCase() === "free"
@@ -128,7 +128,7 @@ export default function ResourceRecommendations() {
       );
     }
 
-    // Platform filter
+   
     if (selectedPlatform !== "all") {
       filtered = filtered.filter((course) =>
         course.platform?.toLowerCase() === selectedPlatform.toLowerCase()
@@ -138,7 +138,7 @@ export default function ResourceRecommendations() {
     return filtered;
   }, [recommendations, selectedFilter, selectedPlatform]);
 
-  // Extract unique platforms
+ 
   const platforms = React.useMemo(() => {
     const platformSet = new Set(
       allCourses.map((course) => course.platform).filter(Boolean)
@@ -186,8 +186,8 @@ export default function ResourceRecommendations() {
   return (
     <div className="min-h-screen bg-[#f6f5f5] py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-[#048998] to-[#3bb4c1] rounded-2xl shadow-xl p-8 mb-8 text-white">
+    
+        <div className="bg-linear-to-r from-[#048998] to-[#3bb4c1] rounded-2xl shadow-xl p-8 mb-8 text-white">
           <div className="flex items-start justify-between flex-wrap gap-4">
             <div>
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
@@ -205,7 +205,7 @@ export default function ResourceRecommendations() {
           </div>
         </div>
 
-        {/* Career Track Display */}
+       
         <div className="bg-white rounded-xl shadow-md p-6 mb-6">
           <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2 text-lg">
             <FaBullseye className="text-[#048998]" />
@@ -239,7 +239,7 @@ export default function ResourceRecommendations() {
           </div>
         </div>
 
-        {/* Filters */}
+      
         <div className="bg-white rounded-xl shadow-md p-6 mb-6">
           <div className="flex flex-wrap items-center gap-4">
             <button
@@ -249,7 +249,7 @@ export default function ResourceRecommendations() {
               <FaFilter /> Filters
             </button>
 
-            {/* Quick Filters */}
+           
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setSelectedFilter("all")}
@@ -283,7 +283,7 @@ export default function ResourceRecommendations() {
               </button>
             </div>
 
-            {/* Active Filters Display */}
+           
             {(selectedPlatform !== "all" || selectedFilter !== "all") && (
               <div className="flex items-center gap-2 ml-auto">
                 <span className="text-sm text-gray-600">Active filters:</span>
@@ -307,7 +307,7 @@ export default function ResourceRecommendations() {
             )}
           </div>
 
-          {/* Expandable Platform Filter */}
+        
           {showFilters && (
             <div className="mt-4 pt-4 border-t">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -342,7 +342,7 @@ export default function ResourceRecommendations() {
           )}
         </div>
 
-        {/* Recommendations Grid */}
+        
         {filteredRecommendations.length === 0 ? (
           <div className="bg-white rounded-xl shadow-md p-12 text-center">
             <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -365,7 +365,7 @@ export default function ResourceRecommendations() {
                 key={course._id || index}
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col"
               >
-                {/* Course Image */}
+               
                 <div className="relative h-48 bg-gradient-to-br from-[#048998] to-[#3bb4c1] overflow-hidden">
                   {course.image ? (
                     <img
@@ -379,7 +379,7 @@ export default function ResourceRecommendations() {
                     </div>
                   )}
                   
-                  {/* Recommended Badge */}
+                 
                   <div className="absolute top-3 right-3 bg-white rounded-full px-3 py-1 shadow-lg">
                     <div className="flex items-center gap-1">
                       <FaStar className="text-yellow-500" />
@@ -389,7 +389,7 @@ export default function ResourceRecommendations() {
                     </div>
                   </div>
 
-                  {/* Cost Badge */}
+                 
                   <div className="absolute top-3 left-3">
                     {course.cost?.toLowerCase() === "free" ? (
                       <span className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
@@ -403,7 +403,7 @@ export default function ResourceRecommendations() {
                   </div>
                 </div>
 
-                {/* Course Content */}
+               
                 <div className="p-5 flex-1 flex flex-col">
                   <h3 className="font-bold text-lg text-gray-800 mb-2 line-clamp-2">
                     {course.title}
@@ -415,7 +415,7 @@ export default function ResourceRecommendations() {
                     </span>
                   </div>
 
-                  {/* Why Recommended */}
+                 
                   <div className="mb-4 p-3 bg-green-50 rounded-lg border border-green-200">
                     <p className="text-xs font-semibold text-green-800 mb-1 flex items-center gap-1">
                       <FaCheckCircle className="text-green-600" />
@@ -426,7 +426,7 @@ export default function ResourceRecommendations() {
                     </p>
                   </div>
 
-                  {/* Relevant Skills */}
+                
                   {course.matchingSkills && course.matchingSkills.length > 0 && (
                     <div className="mb-4">
                       <p className="text-xs font-semibold text-gray-700 mb-2 flex items-center gap-1">
@@ -446,7 +446,7 @@ export default function ResourceRecommendations() {
                     </div>
                   )}
 
-                  {/* All Course Skills */}
+                 
                   {course.courseSkills && course.courseSkills.length > 0 && (
                     <div className="mb-4">
                       <p className="text-xs font-semibold text-gray-700 mb-2">
@@ -470,7 +470,6 @@ export default function ResourceRecommendations() {
                     </div>
                   )}
 
-                  {/* Action Button */}
                   <a
                     href={course.url}
                     target="_blank"
@@ -484,42 +483,6 @@ export default function ResourceRecommendations() {
             ))}
           </div>
         )}
-
-        {/* Recommendation Explanation
-        {filteredRecommendations.length > 0 && (
-          <div className="mt-8 bg-gradient-to-r from-[#048998]/10 to-[#3bb4c1]/10 rounded-xl p-6">
-            <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-              <FaLightbulb className="text-[#048998]" />
-              How Recommendations Work
-            </h3>
-            <ul className="text-sm text-gray-700 space-y-2">
-              <li className="flex items-start gap-2">
-                <FaCheckCircle className="text-green-500 mt-1 flex-shrink-0" />
-                <span>
-                  Courses are matched based on your career track: <strong>{userCareerTrack}</strong>
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <FaCheckCircle className="text-green-500 mt-1 flex-shrink-0" />
-                <span>
-                  We find courses whose skills align with your chosen career path
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <FaCheckCircle className="text-green-500 mt-1 flex-shrink-0" />
-                <span>
-                  Each course helps you develop the skills needed for {userCareerTrack}
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <FaCheckCircle className="text-green-500 mt-1 flex-shrink-0" />
-                <span>
-                  Use filters to find free courses or specific platforms that suit your learning style
-                </span>
-              </li>
-            </ul>
-          </div>
-        )} */}
       </div>
     </div>
   );

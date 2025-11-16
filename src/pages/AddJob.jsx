@@ -165,7 +165,7 @@ export default function AddJob() {
 
       {toast && <Toast {...toast} onClose={() => setToast(null)} />}
 
-      {/* Header */}
+   
       <div className="bg-gradient-to-br from-[#3bb4c1] to-[#048998] text-white py-12 md:py-16 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full animate-pulse-slow" />
@@ -186,7 +186,7 @@ export default function AddJob() {
         </div>
       </div>
 
-      {/* Main Form */}
+     
       <div className="container mx-auto px-6 py-10 max-w-5xl">
         <div className="bg-white rounded-2xl shadow-lg p-8 space-y-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
