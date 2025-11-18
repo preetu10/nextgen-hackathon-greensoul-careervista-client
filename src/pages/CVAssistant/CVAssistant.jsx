@@ -1,30 +1,46 @@
-import React, { useState, useRef } from "react";
-import { Download, Mail } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  Download,
+  Mail,
+  Phone,
+  MapPin,
+  Github,
+  Linkedin,
+  Globe,
+} from "lucide-react";
 import useAuth from "../../customHooks/useAuth";
 import useAxiosSecure from "../../customHooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import { FaGithub, FaGlobe, FaLinkedin } from "react-icons/fa";
 
 const CVAssistant = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [userData, setUserData] = useState("");
-
   const cvRef = useRef(null);
   const [selectedSummary, setSelectedSummary] = useState(0);
+  const [cvData, setCvData] = useState(null);
 
   const { isPending, data: userPro = {} } = useQuery({
     queryKey: ["userPro", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/api/user/${user?.email}`);
-      setUserData(userPro?.careerTrack);
       return res.data;
     },
   });
-  const [cvData, setCvData] = useState(null);
 
-  React.useEffect(() => {
+  const safeJsonParse = (data, fallback = []) => {
+    if (!data) return fallback;
+    if (Array.isArray(data)) return data;
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      console.error("Failed to parse JSON:", e);
+      return fallback;
+    }
+  };
+
+  useEffect(() => {
     if (userPro) {
       setCvData({ ...userPro });
     }
@@ -38,16 +54,12 @@ const CVAssistant = () => {
     );
   }
 
-  let projects = [];
-  try {
-    if (Array.isArray(userPro?.projects)) {
-      projects = userPro.projects;
-    } else if (typeof userPro?.projects === "string") {
-      projects = JSON.parse(userPro.projects);
-    }
-  } catch {
-    projects = [];
-  }
+  const skills = safeJsonParse(cvData?.skills || userPro?.skills, []);
+  const projects = safeJsonParse(cvData?.projects || userPro?.projects, []);
+  const cocurricular = safeJsonParse(
+    cvData?.cocurricular_activities || userPro?.cocurricular_activities,
+    []
+  );
 
   const summaryDatabase = {
     "Web Development": [
@@ -134,89 +146,258 @@ const CVAssistant = () => {
 
   const getSummary = () => {
     if (!cvData?.careerTrack) return "";
-
     const track = cvData.careerTrack;
-    return summaryDatabase[track][selectedSummary];
+    return summaryDatabase[track]?.[selectedSummary] || "";
   };
 
   const handleDownloadFastPDF = () => {
     const pdf = new jsPDF("p", "pt", "a4");
     let y = 40;
+    const lineGap = 14;
+    const pageWidth = 595;
+    const margin = 60;
+    const contentWidth = pageWidth - margin * 2;
 
-    const lineGap = 16;
+    const checkPageBreak = (spaceNeeded = 50) => {
+      if (y + spaceNeeded > 770) {
+        pdf.addPage();
+        y = 40;
+      }
+    };
 
     const addSectionTitle = (title) => {
-      pdf.setFontSize(16);
-      pdf.setTextColor("#048998");
-      pdf.text(title, 40, y);
-      y += 22;
+      checkPageBreak(30);
+      y += 6;
+
+      pdf.setFontSize(13);
+      pdf.setFont(undefined, "bold");
+      pdf.setTextColor("#1e293b");
+      pdf.text(title, margin, y);
+
+      pdf.setLineWidth(1.5);
+      pdf.setDrawColor("#cbd5e1");
+      pdf.line(margin, y + 4, pageWidth - margin, y + 4);
+
+      y += 18;
     };
 
-    const addText = (text, size = 12, color = "#000") => {
+    const addText = (text, size = 10, isBold = false, color = "#334155") => {
+      if (!text) return;
+
       pdf.setFontSize(size);
+      pdf.setFont(undefined, isBold ? "bold" : "normal");
       pdf.setTextColor(color);
 
-      const lines = pdf.splitTextToSize(text, 500);
+      const lines = pdf.splitTextToSize(text, contentWidth);
       lines.forEach((line) => {
-        if (y > 780) {
-          pdf.addPage();
-          y = 40;
-        }
-        pdf.text(line, 40, y);
+        checkPageBreak();
+        pdf.text(line, margin, y);
         y += lineGap;
       });
-      y += 10;
     };
 
-    pdf.setFontSize(22);
-    pdf.setTextColor("#000");
-    pdf.text(userPro.fullName || "", 40, y);
-    y += 24;
+    pdf.setFontSize(24);
+    pdf.setFont(undefined, "bold");
+    pdf.setTextColor("#0f172a");
+    pdf.text(cvData?.fullName || userPro?.fullName || "", margin, y);
+    y += 20;
 
-    pdf.setFontSize(12);
-    pdf.setTextColor("#333");
-    pdf.text(`Email: ${userPro.email}`, 40, y);
-    y += 30;
+    pdf.setFontSize(9);
+    pdf.setFont(undefined, "normal");
+    pdf.setTextColor("#475569");
+
+    const contactLine = [];
+    if (cvData?.email || userPro?.email) {
+      contactLine.push(` ${cvData?.email || userPro?.email}`);
+    }
+    if (cvData?.contact || userPro?.contact) {
+      contactLine.push(` ${cvData?.contact || userPro?.contact}`);
+    }
+
+    if (contactLine.length > 0) {
+      pdf.text(contactLine.join("  |  "), margin, y);
+      y += 13;
+    }
+
+    if (cvData?.address || userPro?.address) {
+      const addressLines = pdf.splitTextToSize(
+        ` ${cvData?.address || userPro?.address}`,
+        contentWidth
+      );
+      addressLines.forEach((line) => {
+        pdf.text(line, margin, y);
+        y += 13;
+      });
+    }
+
+    pdf.setFontSize(9);
+    pdf.setTextColor("#2563eb");
+
+    const firstSocialLine = [];
+    if (cvData?.github_link || userPro?.github_link) {
+      firstSocialLine.push(
+        `GitHub: ${cvData?.github_link || userPro?.github_link}`
+      );
+    }
+    if (cvData?.portfolio_link || userPro?.portfolio_link) {
+      firstSocialLine.push(
+        `Portfolio: ${cvData?.portfolio_link || userPro?.portfolio_link}`
+      );
+    }
+
+    if (firstSocialLine.length > 0) {
+      const socialText = firstSocialLine.join("  |  ");
+      const socialWidth = pdf.getTextWidth(socialText);
+
+      if (socialWidth < contentWidth) {
+        pdf.text(socialText, margin, y);
+        y += 13;
+      } else {
+        firstSocialLine.forEach((link) => {
+          pdf.text(link, margin, y);
+          y += 13;
+        });
+      }
+    }
+
+    if (cvData?.linkedin_link || userPro?.linkedin_link) {
+      pdf.text(
+        `LinkedIn: ${cvData?.linkedin_link || userPro?.linkedin_link}`,
+        margin,
+        y
+      );
+      y += 13;
+    }
+
+    y += 6;
 
     const summary = getSummary();
     if (summary) {
-      addSectionTitle("Professional Summary");
-      addText(summary);
+      addSectionTitle("Career Objective");
+      addText(summary, 10, false, "#475569");
+      y += 6;
     }
 
     addSectionTitle("Education");
-    addText(userPro.education || "");
-    addText(userPro.department || "");
 
-    addSectionTitle("Work Experience");
-    addText(userPro.job_experience || "");
+    if (cvData?.education || userPro?.education) {
+      addText(cvData?.education || userPro?.education, 10, true, "#0f172a");
+    }
+    if (cvData?.department || userPro?.department) {
+      addText(cvData?.department || userPro?.department, 10, false, "#475569");
+    }
+    if (cvData?.educationalInstitute || userPro?.educationalInstitute) {
+      addText(
+        cvData?.educationalInstitute || userPro?.educationalInstitute,
+        10,
+        false,
+        "#475569"
+      );
+    }
+    if (cvData?.passing_year || userPro?.passing_year) {
+      addText(
+        `Passing Year: ${cvData?.passing_year || userPro?.passing_year}`,
+        9,
+        false,
+        "#64748b"
+      );
+    }
+    y += 6;
 
-    addSectionTitle("Skills");
-    addText((userPro.skills || []).join(", "));
+    if (cvData?.job_experience || userPro?.job_experience) {
+      addSectionTitle("Work Experience");
+      addText(
+        cvData?.job_experience || userPro?.job_experience,
+        10,
+        false,
+        "#475569"
+      );
+      y += 6;
+    }
+
+    if (skills.length > 0) {
+      addSectionTitle("Skills");
+      addText(skills.join(" • "), 10, false, "#475569");
+      y += 6;
+    }
 
     if (projects.length > 0) {
       addSectionTitle("Projects");
 
       projects.forEach((p, i) => {
-        pdf.setFontSize(14);
-        pdf.setTextColor("#065f46");
-        pdf.text(`${p.title}`, 40, y);
-        y += 18;
+        checkPageBreak(45);
 
-        addText(p.description, 12, "#333");
+        pdf.setFontSize(11);
+        pdf.setFont(undefined, "bold");
+        pdf.setTextColor("#0f172a");
+        pdf.text(`${p.title}`, margin, y);
+        y += 16;
 
-        if (p.liveLink) addText(`Live: ${p.liveLink}`, 11, "#0000ee");
-        if (p.githubLink) addText(`GitHub: ${p.githubLink}`, 11, "#0000ee");
+        if (p.description) {
+          pdf.setFontSize(10);
+          pdf.setFont(undefined, "normal");
+          pdf.setTextColor("#475569");
+          const descLines = pdf.splitTextToSize(p.description, contentWidth);
+          descLines.forEach((line) => {
+            checkPageBreak();
+            pdf.text(line, margin, y);
+            y += lineGap;
+          });
+          y += 3;
+        }
 
-        y += 10;
+        pdf.setFontSize(9);
+        pdf.setFont(undefined, "normal");
+        pdf.setTextColor("#2563eb");
+
+        if (p.liveLink) {
+          checkPageBreak();
+          pdf.text(`Live Demo: ${p.liveLink}`, margin, y);
+          y += 12;
+        }
+
+        if (p.githubLink) {
+          checkPageBreak();
+          pdf.text(`GitHub: ${p.githubLink}`, margin, y);
+          y += 12;
+        }
+
+        y += 8;
       });
     }
 
-    pdf.setFontSize(10);
-    pdf.setTextColor("#666");
-    pdf.text("Generated by CareerVista CV Assistant", 40, 820);
+    if (cocurricular.length > 0) {
+      addSectionTitle("Co-curricular Activities");
+      cocurricular.forEach((activity, index) => {
+        checkPageBreak();
+        pdf.setFontSize(10);
+        pdf.setFont(undefined, "normal");
+        pdf.setTextColor("#475569");
 
-    pdf.save("my_cv.pdf");
+        const bulletText = `• ${activity}`;
+        const lines = pdf.splitTextToSize(bulletText, contentWidth - 10);
+        lines.forEach((line, lineIndex) => {
+          checkPageBreak();
+          pdf.text(line, margin + (lineIndex > 0 ? 10 : 0), y);
+          y += lineGap;
+        });
+      });
+      y += 6;
+    }
+
+    const totalPages = pdf.internal.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+      pdf.setPage(i);
+      pdf.setFontSize(8);
+      pdf.setTextColor("#64748b");
+      pdf.setFont(undefined, "normal");
+
+      const footerText = "Generated by CareerVista CV Assistant";
+      const footerWidth = pdf.getTextWidth(footerText);
+      pdf.text(footerText, (pageWidth - footerWidth) / 2, 820);
+    }
+
+    pdf.save(`${cvData?.fullName || userPro?.fullName || "CV"}_Resume.pdf`);
   };
 
   return (
@@ -229,29 +410,9 @@ const CVAssistant = () => {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-semibold">Career Track</label>
-              {/* <select
-                value={userPro?.careerTrack}
-                onChange={(e) => setUserData({...userPro, careerTrack: e.target.value})}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-               <option value="Web Development">Web Development</option>
-                <option value="Mobile App Development">Mobile App Development</option>
-                <option value="Data Science">Data Science</option>
-                <option value="AI / ML">AI / ML</option>
-                <option value="UI/UX Design">UI/UX Design</option>
-                <option value="Graphic Design">Graphic Design</option>
-                <option value="Digital Marketing">Digital Marketing</option>
-                <option value="Content Writing">Content Writing</option>
-                <option value="Software Engineering">Software Engineering</option>
-                <option value="Cybersecurity">Cybersecurity</option>
-                <option value="Cloud Computing">Cloud Computing</option>
-                <option value="Business Analysis">Business Analysis</option>
-                <option value="DevOps / System Administration">DevOps / System Administration</option>
-                <option value="Finance & Accounting">Finance & Accounting</option>
-                <option value="Human Resources (HR)">Human Resources (HR)</option>
-                <option value="Education & Training">Education & Training</option>
-              </select> */}
+              <label className="text-sm font-semibold block mb-1">
+                Career Track
+              </label>
               <select
                 value={cvData?.careerTrack || ""}
                 onChange={(e) =>
@@ -260,7 +421,7 @@ const CVAssistant = () => {
                     careerTrack: e.target.value,
                   }))
                 }
-                className="w-full mt-1 px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 {Object.keys(summaryDatabase).map((track) => (
                   <option key={track} value={track}>
@@ -271,11 +432,13 @@ const CVAssistant = () => {
             </div>
 
             <div>
-              <label className="text-sm font-semibold">Summary Variation</label>
+              <label className="text-sm font-semibold block mb-1">
+                Summary Variation
+              </label>
               <select
                 value={selectedSummary}
                 onChange={(e) => setSelectedSummary(parseInt(e.target.value))}
-                className="w-full mt-1 px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value={0}>Summary Option 1</option>
                 <option value={1}>Summary Option 2</option>
@@ -286,7 +449,7 @@ const CVAssistant = () => {
 
           <button
             onClick={handleDownloadFastPDF}
-            className="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg flex items-center gap-2"
+            className="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-colors"
           >
             <Download size={20} />
             Download CV as PDF
@@ -305,64 +468,200 @@ const CVAssistant = () => {
             color: "#000000",
           }}
         >
-          <div className="border-b pb-4 mb-6">
-            <h1 className="text-3xl font-bold text-slate-900">
-              {userPro?.fullName}
+          <div className="border-b-2 border-slate-300 pb-4 mb-3">
+            <h1 className="text-4xl font-bold text-slate-900 mb-2">
+              {cvData?.fullName || userPro?.fullName}
             </h1>
 
-            <div className="flex gap-4 mt-2 text-slate-700 text-sm">
-              <div className="flex items-center gap-2">
-                <Mail size={16} />
-                {userPro?.email}
-              </div>
+            <div className="flex flex-wrap gap-2 text-slate-700 text-sm">
+              {(cvData?.email || userPro?.email) && (
+                <div className="flex items-center gap-2">
+                  <Mail size={16} />
+                  {cvData?.email || userPro?.email}
+                </div>
+              )}
+
+              {(cvData?.contact || userPro?.contact) && (
+                <div className="flex items-center gap-2">
+                  <Phone size={16} />
+                  {cvData?.contact || userPro?.contact}
+                </div>
+              )}
+
+              {(cvData?.address || userPro?.address) && (
+                <div className="flex items-center gap-2">
+                  <MapPin size={16} />
+                  <span className="text-xs">
+                    {cvData?.address || userPro?.address}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-wrap gap-4 mt-2 text-sm">
+              {(cvData?.github_link || userPro?.github_link) && (
+                <a
+                  href={cvData?.github_link || userPro?.github_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-blue-600 hover:underline"
+                >
+                  <FaGithub size={16} />
+                  GitHub
+                </a>
+              )}
+
+              {(cvData?.linkedin_link || userPro?.linkedin_link) && (
+                <a
+                  href={cvData?.linkedin_link || userPro?.linkedin_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-blue-600 hover:underline"
+                >
+                  <FaLinkedin size={16} />
+                  LinkedIn
+                </a>
+              )}
+
+              {(cvData?.portfolio_link || userPro?.portfolio_link) && (
+                <a
+                  href={cvData?.portfolio_link || userPro?.portfolio_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-blue-600 hover:underline"
+                >
+                  <FaGlobe size={16} />
+                  Portfolio
+                </a>
+              )}
             </div>
           </div>
 
           {getSummary() && (
-            <section className="mb-6">
-              <h2 className="text-xl font-bold border-b pb-1 mb-2">
-                Professional Summary
+            <section className="mb-3">
+              <h2 className="text-xl font-bold border-b-2 border-slate-300 pb-1 mb-2 text-slate-800">
+                Career Objective
               </h2>
-              <p className="text-slate-700 leading-relaxed">{getSummary()}</p>
+              <p className="text-slate-700 leading-relaxed text-justify">
+                {getSummary()}
+              </p>
             </section>
           )}
 
-          <section className="mb-6">
-            <h2 className="text-xl font-bold border-b pb-1 mb-2">Education</h2>
-            <p className="font-semibold">{userPro?.education}</p>
-            <p className="text-slate-700">{userPro?.department}</p>
-          </section>
-
-          <section className="mb-6">
-            <h2 className="text-xl font-bold border-b pb-1 mb-2">
-              Work Experience
+          <section className="mb-3">
+            <h2 className="text-xl font-bold border-b-2 border-slate-300 pb-1 mb-2 text-slate-800">
+              Education
             </h2>
-            <p className="text-slate-700">{userPro?.job_experience}</p>
+            <div className="space-y-1">
+              {(cvData?.education || userPro?.education) && (
+                <p className="font-semibold text-slate-900">
+                  {cvData?.education || userPro?.education}
+                </p>
+              )}
+              {(cvData?.department || userPro?.department) && (
+                <p className="text-slate-700">
+                  {cvData?.department || userPro?.department}
+                </p>
+              )}
+              {(cvData?.educationalInstitute ||
+                userPro?.educationalInstitute) && (
+                <p className="text-slate-700">
+                  {cvData?.educationalInstitute ||
+                    userPro?.educationalInstitute}
+                </p>
+              )}
+              {(cvData?.passing_year || userPro?.passing_year) && (
+                <p className="text-slate-600 text-sm">
+                  Passing Year: {cvData?.passing_year || userPro?.passing_year}
+                </p>
+              )}
+            </div>
           </section>
 
-          <section className="mb-6">
-            <h2 className="text-xl font-bold border-b pb-1 mb-2">Skills</h2>
-            <p className="text-slate-700">{userPro?.skills?.join(", ")}</p>
-          </section>
+          {(cvData?.job_experience || userPro?.job_experience) && (
+            <section className="mb-3">
+              <h2 className="text-xl font-bold border-b-2 border-slate-300 pb-1 mb-2 text-slate-800">
+                Work Experience
+              </h2>
+              <p className="text-slate-700 leading-relaxed">
+                {cvData?.job_experience || userPro?.job_experience}
+              </p>
+            </section>
+          )}
+
+          {skills.length > 0 && (
+            <section className="mb-3">
+              <h2 className="text-xl font-bold border-b-2 border-slate-300 pb-1 mb-2 text-slate-800">
+                Skills
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {skills.map((skill, idx) => (
+                  <span
+                    key={idx}
+                    className="bg-slate-200 text-slate-800 px-3 py-1 rounded-full text-sm"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
 
           {projects.length > 0 && (
-            <section className="mb-6">
-              <h2 className="text-xl font-bold border-b pb-1 mb-2">Projects</h2>
+            <section className="mb-2">
+              <h2 className="text-xl font-bold border-b-2 border-slate-300 pb-1 mb-3 text-slate-800">
+                Projects
+              </h2>
               {projects.map((p, idx) => (
-                <div key={idx} className="mb-4">
-                  <h3 className="font-semibold text-lg">{p.title}</h3>
-                  <p className="text-slate-700">{p.description}</p>
-
-                  {p.liveLink && (
-                    <p className="text-blue-700 text-sm">Live: {p.liveLink}</p>
-                  )}
-                  {p.githubLink && (
-                    <p className="text-blue-700 text-sm">
-                      GitHub: {p.githubLink}
+                <div key={idx} className="mb-2 last:mb-0">
+                  <h3 className="font-semibold text-lg text-slate-900">
+                    {p.title}
+                  </h3>
+                  {p.description && (
+                    <p className="text-slate-700 mt-1 leading-relaxed text-justify">
+                      {p.description}
                     </p>
                   )}
+
+                  <div className="flex flex-wrap gap-3 mt-1">
+                    {p.liveLink && (
+                      <a
+                        href={p.liveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 text-sm hover:underline"
+                      >
+                        Live Demo: {p.liveLink}
+                      </a>
+                    )}
+                    {p.githubLink && (
+                      <a
+                        href={p.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 text-sm hover:underline"
+                      >
+                        GitHub: {p.githubLink}
+                      </a>
+                    )}
+                  </div>
                 </div>
               ))}
+            </section>
+          )}
+
+          {cocurricular.length > 0 && (
+            <section className="mb-2">
+              <h2 className="text-xl font-bold border-b-2 border-slate-300 pb-1 mb-1 text-slate-800">
+                Co-curricular Activities
+              </h2>
+              <ul className="list-disc list-inside space-y-1 text-slate-700">
+                {cocurricular.map((activity, idx) => (
+                  <li key={idx} className="leading-relaxed">
+                    {activity}
+                  </li>
+                ))}
+              </ul>
             </section>
           )}
         </div>
