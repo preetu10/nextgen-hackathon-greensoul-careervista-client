@@ -42,11 +42,19 @@ export default function UpdateProfile() {
   const [formData, setFormData] = useState({
     education: "",
     department: "",
+    educationalInstitute: "",
+    passing_year: "",
     experience: "",
     careerTrack: "",
+    address: "",
+    contact: "",
     skills: [],
+    cocurricular_activities: [],
     job_experience: "",
     cvPath: "",
+    github_link: "",
+    linkedin_link: "",
+    portfolio_link: "",
   });
 
   const [projects, setProjects] = useState([]);
@@ -56,32 +64,52 @@ export default function UpdateProfile() {
     githubLink: "",
     description: "",
   });
+  const [showActivityForm, setShowActivityForm] = useState(false);
+  const [newActivity, setNewActivity] = useState("");
   const [showProjectForm, setShowProjectForm] = useState(false);
   const [availableSkills, setAvailableSkills] = useState([]);
   const [showSkillsDropdown, setShowSkillsDropdown] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const safeJsonParse = (data, fallback = []) => {
+    if (!data) return fallback;
+    if (Array.isArray(data)) return data;
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      console.error("Failed to parse JSON:", e);
+      return fallback;
+    }
+  };
+
   useEffect(() => {
     if (userPro) {
-      const parsedSkills = userPro.skills
-        ? Array.isArray(userPro.skills)
-          ? userPro.skills
-          : JSON.parse(userPro.skills)
-        : [];
-      const parsedProjects = userPro.projects
-        ? Array.isArray(userPro.projects)
-          ? userPro.projects
-          : JSON.parse(userPro.projects)
-        : [];
+      const parsedSkills = safeJsonParse(userPro.skills, []);
+      const parsedActivities = safeJsonParse(
+        userPro.cocurricular_activities,
+        []
+      );
+      const parsedProjects = safeJsonParse(userPro.projects, []);
+
       setFormData({
         education: userPro.education || "",
         department: userPro.department || "",
+        educationalInstitute: userPro.educationalInstitute || "",
+        passing_year: userPro.passing_year || "",
         experience: userPro.experience || "",
         careerTrack: userPro.careerTrack || "",
+        address: userPro.address || "",
+        contact: userPro.contact || "",
         skills: parsedSkills,
+        cocurricular_activities: parsedActivities,
         job_experience: userPro.job_experience || "",
-        cvPath: userPro.cvPath || "",
+
+        cvPath: userPro.cvPath || userPro.cv_url || "",
+        github_link: userPro.github_link || "",
+        linkedin_link: userPro.linkedin_link || "",
+        portfolio_link: userPro.portfolio_link || "",
       });
+
       setProjects(parsedProjects);
     }
   }, [userPro]);
@@ -99,7 +127,7 @@ export default function UpdateProfile() {
       }
     };
     fetchSkills();
-  }, [formData.careerTrack]);
+  }, [formData.careerTrack, axiosSecure]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -108,9 +136,43 @@ export default function UpdateProfile() {
 
   const handleSkillSelect = (skill) => {
     if (!formData.skills.includes(skill)) {
-      setFormData((prev) => ({ ...prev, skills: [...prev.skills, skill] }));
+      setFormData((prev) => ({
+        ...prev,
+        skills: [...prev.skills, skill],
+      }));
     }
     setShowSkillsDropdown(false);
+  };
+
+  const handleCoCurricularAdd = () => {
+    setShowActivityForm(true);
+    setNewActivity("");
+  };
+
+  const handleSaveActivity = () => {
+    if (!newActivity.trim()) {
+      toast.error("Please write an activity.");
+      return;
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      cocurricular_activities: [...prev.cocurricular_activities, newActivity],
+    }));
+
+    setShowActivityForm(false);
+    setNewActivity("");
+    toast.success("Activity added!");
+  };
+
+  const handleActivityRemove = (activityToRemove) => {
+    setFormData((prev) => ({
+      ...prev,
+      cocurricular_activities: prev.cocurricular_activities.filter(
+        (a) => a !== activityToRemove
+      ),
+    }));
+    toast.info("Activity removed");
   };
 
   const handleSkillRemove = (skillToRemove) => {
@@ -157,19 +219,45 @@ export default function UpdateProfile() {
   };
 
   const handleSubmit = async () => {
+    // Validation
+    if (!formData.careerTrack) {
+      toast.error("Please select a career track!");
+      return;
+    }
+
     if (formData.skills.length === 0) {
       toast.error("Please select at least one skill!");
       return;
     }
 
     setIsSubmitting(true);
+
     try {
       const dataToSubmit = {
-        ...formData,
+        education: formData.education,
+        department: formData.department,
+        educationalInstitute: formData.educationalInstitute,
+        passing_year: formData.passing_year,
+        experience: formData.experience,
+        careerTrack: formData.careerTrack,
+        address: formData.address,
+        contact: formData.contact,
+        job_experience: formData.job_experience,
+
         skills: JSON.stringify(formData.skills),
+        cocurricular_activities: JSON.stringify(
+          formData.cocurricular_activities
+        ),
         projects: JSON.stringify(projects),
+
+        cv_url: formData.cvPath,
+        github_link: formData.github_link,
+        linkedin_link: formData.linkedin_link,
+        portfolio_link: formData.portfolio_link,
       };
+
       await axiosSecure.patch(`/api/user-update/${user?.email}`, dataToSubmit);
+
       toast.success("Profile updated successfully!");
       navigate("/v1/user-profile");
     } catch (err) {
@@ -205,7 +293,7 @@ export default function UpdateProfile() {
               user?.photoURL || "https://i.ibb.co/sVJ3S81/cat-551554-1280.jpg"
             }
             alt="User"
-            className="w-16 h-16 rounded-full border-2 border-[#048998]"
+            className="w-16 h-16 rounded-full border-2 border-[#048998] object-cover"
           />
           <div>
             <p className="text-lg font-bold">{user?.displayName}</p>
@@ -214,30 +302,87 @@ export default function UpdateProfile() {
         </div>
 
         <InputField
-          label="Education"
+          label="Educational Institution"
+          name="educationalInstitute"
+          value={formData.educationalInstitute}
+          onChange={handleChange}
+          placeholder="e.g., University of Chittagong"
+        />
+        <InputField
+          label="Education Level"
           name="education"
           value={formData.education}
           onChange={handleChange}
-          placeholder="e.g., Bachelor's, Master's"
+          placeholder="e.g., BSc (Engineering), Bachelor's, Master's"
         />
+
         <InputField
           label="Department / Major"
           name="department"
           value={formData.department}
           onChange={handleChange}
-          placeholder="e.g., Computer Science"
+          placeholder="e.g., Department of Computer Science and Engineering"
         />
+
         <InputField
-          label="Experience"
+          label="Passing Year"
+          name="passing_year"
+          value={formData.passing_year}
+          onChange={handleChange}
+          placeholder="e.g., 2025"
+        />
+
+        <InputField
+          label="Address"
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          placeholder="Your current address"
+        />
+
+        <InputField
+          label="Contact Number"
+          name="contact"
+          value={formData.contact}
+          onChange={handleChange}
+          placeholder="e.g., +8801XXXXXXXXX"
+        />
+
+        <InputField
+          label="GitHub Profile Link"
+          name="github_link"
+          value={formData.github_link}
+          onChange={handleChange}
+          placeholder="https://github.com/your-profile"
+        />
+
+        <InputField
+          label="LinkedIn Profile Link"
+          name="linkedin_link"
+          value={formData.linkedin_link}
+          onChange={handleChange}
+          placeholder="https://linkedin.com/in/your-profile"
+        />
+
+        <InputField
+          label="Portfolio / Website Link"
+          name="portfolio_link"
+          value={formData.portfolio_link}
+          onChange={handleChange}
+          placeholder="https://yourportfolio.com"
+        />
+
+        <InputField
+          label="Experience Level"
           name="experience"
           value={formData.experience}
           onChange={handleChange}
-          placeholder="e.g., Entry Level"
+          placeholder="e.g., Fresher, Entry Level, Mid Level"
         />
 
         <div className="mb-4">
           <label className="block font-semibold text-gray-700 mb-1">
-            Career Track
+            Career Track <span className="text-red-500">*</span>
           </label>
           <select
             name="careerTrack"
@@ -256,8 +401,9 @@ export default function UpdateProfile() {
 
         <div className="mb-6">
           <label className="block font-semibold text-gray-700 mb-1">
-            Skills
+            Skills <span className="text-red-500">*</span>
           </label>
+
           <div className="flex flex-wrap gap-2 mb-2">
             {formData.skills.map((skill, i) => (
               <span
@@ -271,28 +417,102 @@ export default function UpdateProfile() {
               </span>
             ))}
           </div>
+
           <div className="relative">
             <button
               type="button"
               onClick={() => setShowSkillsDropdown(!showSkillsDropdown)}
-              className="px-2 py-1 border border-gray-300 rounded-lg text-sm"
+              className="px-3 py-2 border border-gray-300 text-sm rounded-lg hover:bg-gray-50"
             >
               {showSkillsDropdown ? "Close" : "Add Skills"}
             </button>
+
             {showSkillsDropdown && unselectedSkills.length > 0 && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-40 overflow-y-auto">
+              <div className="absolute z-10 w-full mt-1 border rounded-lg bg-white shadow-lg max-h-40 overflow-y-auto">
                 {unselectedSkills.map((skill, i) => (
                   <button
                     key={i}
+                    type="button"
+                    className="w-full text-left px-3 py-2 hover:bg-[#048998] hover:text-white text-sm"
                     onClick={() => handleSkillSelect(skill)}
-                    className="w-full text-left px-3 py-1 hover:bg-[#048998] hover:text-white text-sm"
                   >
                     {skill}
                   </button>
                 ))}
               </div>
             )}
+
+            {showSkillsDropdown && unselectedSkills.length === 0 && (
+              <div className="absolute z-10 w-full mt-1 border rounded-lg bg-white shadow-lg p-3 text-sm text-gray-500">
+                No more skills available. All skills added!
+              </div>
+            )}
           </div>
+        </div>
+
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <label className="font-semibold text-gray-700">
+              Co-curricular Activities
+            </label>
+            <button
+              type="button"
+              onClick={handleCoCurricularAdd}
+              className="px-3 py-1 bg-[#048998] text-white rounded hover:bg-[#037382]"
+            >
+              Add Activity
+            </button>
+          </div>
+
+          {formData.cocurricular_activities.map((act, i) => (
+            <div
+              key={i}
+              className="border border-gray-300 p-3 rounded-lg mt-2 flex justify-between items-center"
+            >
+              <p className="text-gray-700">{act}</p>
+              <button
+                type="button"
+                onClick={() => handleActivityRemove(act)}
+                className="text-red-500 hover:text-red-700"
+              >
+                <FaTrash />
+              </button>
+            </div>
+          ))}
+
+          {showActivityForm && (
+            <div className="bg-gray-50 p-4 rounded-lg mt-2 border border-gray-200">
+              <label className="block font-semibold mb-2 text-gray-700">
+                Add Co-Curricular Activity
+              </label>
+
+              <textarea
+                value={newActivity}
+                onChange={(e) => setNewActivity(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-3 focus:border-[#048998] focus:outline-none"
+                placeholder="e.g., Volunteering in xyz organization"
+                rows="2"
+              />
+
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowActivityForm(false)}
+                  className="border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSaveActivity}
+                  className="px-4 py-2 bg-[#048998] text-white rounded-lg hover:bg-[#037382]"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <InputField
@@ -303,41 +523,46 @@ export default function UpdateProfile() {
           placeholder="Describe your work experience..."
           multiline
         />
+
         <InputField
           label="CV / Resume URL"
           name="cvPath"
           value={formData.cvPath}
           onChange={handleChange}
-          placeholder="Enter your CV link"
+          placeholder="Enter Google Drive or PDF link"
         />
 
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <p className="font-semibold text-gray-700">Projects</p>
+            <label className="font-semibold text-gray-700">Projects</label>
             <button
+              type="button"
               onClick={handleAddProject}
-              className="bg-[#048998] text-white px-3 py-1 rounded"
+              className="px-3 py-1 bg-[#048998] text-white rounded hover:bg-[#037382]"
             >
               Add Project
             </button>
           </div>
+
           {projects.map((p, i) => (
             <div
               key={i}
-              className="border border-gray-300 p-3 rounded mb-2 flex justify-between items-start"
+              className="border border-gray-300 p-4 rounded-lg mt-2 flex justify-between items-start"
             >
-              <div>
-                <p className="font-semibold">{p.title}</p>
-                {p.description && <p className="text-sm">{p.description}</p>}
-                <div className="flex gap-2 text-sm mt-1">
+              <div className="flex-1">
+                <p className="font-semibold text-gray-800">{p.title}</p>
+                {p.description && (
+                  <p className="text-sm text-gray-600 mt-1">{p.description}</p>
+                )}
+                <div className="flex gap-3 mt-2">
                   {p.liveLink && (
                     <a
                       href={p.liveLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#048998]"
+                      className="text-[#048998] text-sm hover:underline"
                     >
-                      Live
+                      Live Demo
                     </a>
                   )}
                   {p.githubLink && (
@@ -345,16 +570,18 @@ export default function UpdateProfile() {
                       href={p.githubLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#048998]"
+                      className="text-[#048998] text-sm hover:underline"
                     >
                       GitHub
                     </a>
                   )}
                 </div>
               </div>
+
               <button
+                type="button"
                 onClick={() => handleDeleteProject(i)}
-                className="text-red-500"
+                className="text-red-500 hover:text-red-700 ml-4"
               >
                 <FaTrash />
               </button>
@@ -362,24 +589,27 @@ export default function UpdateProfile() {
           ))}
 
           {showProjectForm && (
-            <div className="border p-4 rounded mb-2 bg-gray-50">
+            <div className="bg-gray-50 p-4 rounded-lg mt-2 border border-gray-200">
               <InputField
                 name="title"
                 label="Project Title"
                 value={currentProject.title}
                 onChange={handleProjectChange}
+                placeholder="e.g., BuildAura"
               />
               <InputField
                 name="liveLink"
                 label="Live Link"
                 value={currentProject.liveLink}
                 onChange={handleProjectChange}
+                placeholder="https://your-project.web.app/"
               />
               <InputField
                 name="githubLink"
                 label="GitHub Link"
                 value={currentProject.githubLink}
                 onChange={handleProjectChange}
+                placeholder="https://github.com/username/project"
               />
               <InputField
                 name="description"
@@ -387,17 +617,21 @@ export default function UpdateProfile() {
                 value={currentProject.description}
                 onChange={handleProjectChange}
                 multiline
+                placeholder="Brief description of your project..."
               />
-              <div className="flex gap-2 mt-2">
+
+              <div className="flex gap-2 mt-3">
                 <button
+                  type="button"
                   onClick={() => setShowProjectForm(false)}
-                  className="px-3 py-1 border rounded"
+                  className="border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50"
                 >
                   Cancel
                 </button>
                 <button
+                  type="button"
                   onClick={handleSaveProject}
-                  className="px-3 py-1 bg-[#048998] text-white rounded"
+                  className="px-4 py-2 bg-[#048998] text-white rounded-lg hover:bg-[#037382]"
                 >
                   Save
                 </button>
@@ -406,16 +640,21 @@ export default function UpdateProfile() {
           )}
         </div>
 
-        <div className="flex gap-2 justify-end">
+        <div className="flex gap-3 justify-end mt-6">
           <button
+            type="button"
             onClick={() => navigate("/v1/user-profile")}
-            className="px-4 py-2 border rounded"
+            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            disabled={isSubmitting}
           >
             Cancel
           </button>
+
           <button
+            type="button"
             onClick={handleSubmit}
-            className="px-4 py-2 bg-[#048998] text-white rounded"
+            className="px-6 py-2 bg-[#048998] text-white rounded-lg hover:bg-[#037382] disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
           >
             {isSubmitting ? "Updating..." : "Update Profile"}
           </button>

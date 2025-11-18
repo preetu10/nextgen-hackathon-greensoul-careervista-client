@@ -73,7 +73,9 @@ const Register = () => {
               email,
               image,
               careerTrack: data.careerTrack,
-              role: data.role,
+              contact:data.contact,
+              educationalInstitute:data.educationalInstitute,
+              address:data.address,
               education: data.education,
               department: data.department,
               experience: data.experience,
@@ -106,17 +108,17 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen font-Lato ">
-      <div className="flex w-full max-w-6xl bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div
+    <div className="flex justify-center items-center min-h-screen mb-4 ">
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-lg overflow-hidden">
+        {/* <div
           className="hidden lg:block lg:w-1/2 bg-cover bg-center"
           style={{
             backgroundImage: `url('https://i.ibb.co/Gfv3cPLV/office-6817959-1280.png')`,
           }}
-        ></div>
+        ></div> */}
 
         {/* Form */}
-        <div className="w-full lg:w-1/2 px-10 py-12">
+        <div className="w-full  px-10 py-12">
           <h2 className="text-3xl font-semibold text-center text-gray-700 mb-2">
             Create an Account
           </h2>
@@ -126,7 +128,7 @@ const Register = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Left Column - 3 Fields */}
+              {/* Left Column */}
               <div className="space-y-5">
                 <div className="form-control">
                   <label className="label">Full Name</label>
@@ -167,7 +169,36 @@ const Register = () => {
                     <p className="text-red-500 text-sm mt-1">{registerError}</p>
                   )}
                 </div>
-
+                <div className="form-control">
+                  <label className="label">Name of Educational Institute</label>
+                  <input
+                    {...formRegister("educationalInstitute", {
+                      required: true,
+                    })}
+                    type="text"
+                    placeholder="e.g. University of Chittagong"
+                    className="input input-bordered w-full h-12 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
+                  />
+                  {errors.educationalInstitute && (
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
+                  )}
+                </div>
+                <div className="form-control">
+                  <label className="label">Address</label>
+                  <input
+                    {...formRegister("address", { required: true })}
+                    type="text"
+                    placeholder="Address"
+                    className="input input-bordered w-full h-12 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
+                  />
+                  {errors.educationalInstitute && (
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
+                  )}
+                </div>
                 <div className="form-control">
                   <label className="label">Preferred Career Track</label>
                   <select
@@ -187,26 +218,9 @@ const Register = () => {
                     </span>
                   )}
                 </div>
-
-                <div className="form-control">
-                  <label className="label">Role</label>
-                  <select
-                    {...formRegister("role", { required: true })}
-                    className="input input-bordered w-full h-12 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
-                  >
-                    <option value="">Select your role</option>
-                    <option value="user">General User</option>
-                    <option value="recruiter">Recruiter</option>
-                  </select>
-                  {errors.role && (
-                    <span className="text-red-500 text-sm">
-                      This field is required
-                    </span>
-                  )}
-                </div>
               </div>
 
-              {/* Right Column - 3 Fields */}
+              {/* Right Column  */}
               <div className="space-y-5">
                 <div className="form-control">
                   <label className="label">Email</label>
@@ -251,7 +265,20 @@ const Register = () => {
                     </span>
                   )}
                 </div>
-
+                <div className="form-control">
+                  <label className="label">Contact Number</label>
+                  <input
+                    {...formRegister("contact", { required: true })}
+                    type="text"
+                    placeholder="e.g. +8801*********"
+                    className="input input-bordered w-full h-12 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f1b963]"
+                  />
+                  {errors.contact && (
+                    <span className="text-red-500 text-sm">
+                      This field is required
+                    </span>
+                  )}
+                </div>
                 <div className="form-control">
                   <label className="label">Experience Level</label>
                   <select
