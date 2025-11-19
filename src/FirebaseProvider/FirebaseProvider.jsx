@@ -63,15 +63,7 @@ const FirebaseProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // if (currentUser) {
-      //  setUser(currentUser)
-      //  saveUser(user)
-      //  setLoading(false)
-      // } else {
-      //   // User is signed out
-      //   // ...
-      //   setLoading(false)
-      // }
+     
       if (currentUser) {
         setUser(currentUser)
         const userInfo = { email: currentUser.email };

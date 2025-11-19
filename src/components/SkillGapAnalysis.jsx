@@ -77,11 +77,11 @@ export default function SkillGapAnalysis({ job, analysis, onClose }) {
           </div>
         </div>
 
-        {/* Content */}
+    
         <div className="overflow-y-auto max-h-[calc(90vh-200px)] p-6">
           {activeTab === 'gaps' && (
             <div className="space-y-6">
-              {/* Overall Progress */}
+
               <div 
                 className="rounded-2xl p-6"
                 style={{ background: 'linear-gradient(135deg, #048998 0%, #3bb4c1 100%)' }}
@@ -124,7 +124,7 @@ export default function SkillGapAnalysis({ job, analysis, onClose }) {
                     >
                       <div className="flex items-start gap-4">
                         <div 
-                          className="h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0"
+                          className="h-10 w-10 rounded-full flex items-center justify-center shrink-0"
                           style={{ background: '#E3F2F7' }}
                         >
                           <GraduationCap className="h-5 w-5" style={{ color: '#048998' }} />
@@ -152,7 +152,7 @@ export default function SkillGapAnalysis({ job, analysis, onClose }) {
                                 </p>
                               </div>
                               
-                              {/* Scrollable Resource Cards */}
+                          
                               <div className="relative">
                                 <div 
                                   className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
@@ -164,7 +164,7 @@ export default function SkillGapAnalysis({ job, analysis, onClose }) {
                                       href={resource.url}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="flex-shrink-0 w-72 group"
+                                      className="shrink-0 w-72 group"
                                       style={{
                                         opacity: 0,
                                         animation: `slideInRight 0.5s ease-out ${rIndex * 0.1}s forwards`
@@ -177,7 +177,7 @@ export default function SkillGapAnalysis({ job, analysis, onClose }) {
                                         {/* Resource Header */}
                                         <div className="flex items-start gap-3 mb-3">
                                           <div 
-                                            className="h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
+                                            className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
                                             style={{ background: '#E3F2F7' }}
                                           >
                                             {resource.type === 'course' && <BookOpen className="h-5 w-5" style={{ color: '#048998' }} />}
@@ -191,13 +191,13 @@ export default function SkillGapAnalysis({ job, analysis, onClose }) {
                                               <p className="font-semibold text-sm line-clamp-2 flex-1">
                                                 {resource.title}
                                               </p>
-                                              <ExternalLink className="h-3.5 w-3.5 text-gray-400 flex-shrink-0 mt-0.5 group-hover:text-[#048998] transition-colors" />
+                                              <ExternalLink className="h-3.5 w-3.5 text-gray-400 shrink-0 mt-0.5 group-hover:text-[#048998] transition-colors" />
                                             </div>
                                             <p className="text-xs text-gray-500 mt-1">{resource.platform}</p>
                                           </div>
                                         </div>
 
-                                        {/* Resource Type Badge */}
+                               
                                         <div className="mb-3">
                                           <span 
                                             className="inline-block px-2 py-1 rounded-md text-xs font-medium"
@@ -210,7 +210,7 @@ export default function SkillGapAnalysis({ job, analysis, onClose }) {
                                           </span>
                                         </div>
 
-                                        {/* Resource Metadata */}
+                                     
                                         <div className="flex items-center gap-3 pt-3 border-t">
                                           {resource.duration && (
                                             <div className="flex items-center gap-1.5">
@@ -230,7 +230,7 @@ export default function SkillGapAnalysis({ job, analysis, onClose }) {
                                           )}
                                         </div>
 
-                                        {/* Hover Effect Arrow */}
+                                      
                                         <div className="mt-3 flex items-center gap-1 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#048998' }}>
                                           <span>Start Learning</span>
                                           <ChevronRight className="h-3 w-3" />
@@ -240,13 +240,13 @@ export default function SkillGapAnalysis({ job, analysis, onClose }) {
                                   ))}
                                 </div>
 
-                                {/* Scroll Indicator */}
+                               
                                 {skillData.learningResources.length > 1 && (
-                                  <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none" />
+                                  <div className="absolute right-0 top-0 bottom-0 w-12 bg-linear-to-l from-white to-transparent pointer-events-none" />
                                 )}
                               </div>
 
-                              {/* Resource Count */}
+                            
                               <p className="text-xs text-gray-500 flex items-center gap-1">
                                 <span className="inline-block w-2 h-2 rounded-full" style={{ background: '#048998' }} />
                                 {skillData.learningResources.length} resource{skillData.learningResources.length !== 1 ? 's' : ''} available
@@ -307,7 +307,7 @@ export default function SkillGapAnalysis({ job, analysis, onClose }) {
           )}
         </div>
 
-        {/* Footer */}
+       
         <div className="sticky bottom-0 bg-white border-t p-6">
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-600">

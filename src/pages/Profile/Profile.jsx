@@ -1,31 +1,46 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../../customHooks/useAuth";
 import useAxiosSecure from "../../customHooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import {
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
   FaGraduationCap,
-  FaBook,
   FaBriefcase,
-  FaRoad,
-  FaTools,
-  FaProjectDiagram,
-  FaFilePdf,
-  FaExternalLinkAlt,
   FaGithub,
+  FaLinkedin,
+  FaGlobe,
+  FaFileAlt,
+  FaEdit,
+  FaExternalLinkAlt,
+  FaTrophy,
 } from "react-icons/fa";
 
 export default function Profile() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
 
-  const { isPending, data: userPro = {} } = useQuery({
+  const { isPending, data: userPro } = useQuery({
     queryKey: ["userPro", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/api/user/${user?.email}`);
       return res.data;
     },
   });
+
+  const safeJsonParse = (data, fallback = []) => {
+    if (!data) return fallback;
+    if (Array.isArray(data)) return data;
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      console.error("Failed to parse JSON:", e);
+      return fallback;
+    }
+  };
 
   if (isPending) {
     return (
@@ -35,190 +50,266 @@ export default function Profile() {
     );
   }
 
-  const InfoItem = ({ icon: Icon, label, value }) => (
-    <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/50 transition-colors">
-      <div className="shrink-0 w-10 h-10 bg-[#048998] text-white rounded-full flex items-center justify-center mt-0.5">
-        <Icon className="text-lg" />
-      </div>
-      <div className="flex-1">
-        <p className="font-semibold text-gray-700 text-sm mb-1">{label}</p>
-        <p className="text-gray-900">{value || "Not provided"}</p>
-      </div>
-    </div>
-  );
-
-   // Render Skills
-  const renderSkills = (skills) => {
-    let skillsArray = [];
-    if (Array.isArray(skills)) skillsArray = skills;
-    else if (typeof skills === "string") {
-      try {
-        skillsArray = JSON.parse(skills);
-      } catch {
-        skillsArray = [];
-      }
-    }
-
-    if (skillsArray.length === 0) return <p className="text-gray-500">No skills added</p>;
-
-    return (
-      <div className="flex flex-wrap gap-2">
-        {skillsArray.map((skill, idx) => (
-          <span
-            key={idx}
-            className="bg-linear-to-r from-[#048998] to-[#026873] text-white px-3 py-1 rounded-full text-sm font-medium shadow"
-          >
-            {skill}
-          </span>
-        ))}
-      </div>
-    );
-  };
-
-  // Render Projects
-  const renderProjects = (projects) => {
-    let projectsArray = [];
-    if (Array.isArray(projects)) projectsArray = projects;
-    else if (typeof projects === "string") {
-      try {
-        projectsArray = JSON.parse(projects);
-      } catch {
-        projectsArray = [];
-      }
-    }
-
-    if (projectsArray.length === 0) return <p className="text-gray-500">No projects added</p>;
-
-    return (
-      <div className="grid md:grid-cols-2 gap-4">
-        {projectsArray.map((project, idx) => (
-          <div
-            key={idx}
-            className="border border-gray-200 rounded-xl p-5 shadow hover:shadow-lg transition-shadow bg-white flex flex-col justify-between"
-          >
-            <div>
-              <h3 className="font-semibold text-lg text-gray-800 mb-2">{project.title}</h3>
-              {project.description && (
-                <p className="text-gray-600 mb-3 text-sm">{project.description}</p>
-              )}
-            </div>
-            <div className="flex flex-wrap gap-3 mt-2">
-              {project.liveLink && (
-                <a
-                  href={project.liveLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-[#048998] hover:text-[#026873] font-medium"
-                >
-                  <FaExternalLinkAlt /> Live
-                </a>
-              )}
-              {project.githubLink && (
-                <a
-                  href={project.githubLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-[#048998] hover:text-[#026873] font-medium"
-                >
-                  <FaGithub /> GitHub
-                </a>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  };
+  const skills = safeJsonParse(userPro?.skills, []);
+  const projects = safeJsonParse(userPro?.projects, []);
+  const cocurricular = safeJsonParse(userPro?.cocurricular_activities, []);
 
   return (
-    <div className="min-h-screen bg-[#f6f5f5] py-4 px-2">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          {/* Header */}
-          <div className="bg-linear-to-r from-[#048998] to-[#026873] h-32 relative">
-            <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
-              <div className="relative">
-                <img
-                  src={user?.photoURL || "https://i.ibb.co/sVJ3S81/cat-551554-1280.jpg"}
-                  alt="User"
-                  className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
-                />
-                <div className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#048998] opacity-5 rounded-full -mr-32 -mt-32"></div>
+
+          <div className="relative flex flex-col md:flex-row items-center md:items-start gap-6">
+            <img
+              src={
+                user?.photoURL || "https://i.ibb.co/sVJ3S81/cat-551554-1280.jpg"
+              }
+              alt={userPro?.fullName}
+              className="w-32 h-32 rounded-full border-4 border-[#048998] shadow-lg object-cover"
+            />
+
+            <div className="flex-1 text-center md:text-left">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+                <div>
+                  <h1 className="text-4xl font-bold text-gray-800 mb-2">
+                    {userPro?.fullName}
+                  </h1>
+                  <p className="text-xl text-[#048998] font-semibold">
+                    {userPro?.careerTrack}
+                  </p>
+                </div>
+                <button
+                  onClick={() => navigate("/v1/update-profile")}
+                  className="bg-[#048998] hover:bg-[#037382] text-white px-6 py-2 rounded-lg flex items-center gap-2 justify-center transition-colors"
+                >
+                  <FaEdit /> Edit Profile
+                </button>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-3 text-gray-600">
+                <div className="flex items-center gap-2 justify-center md:justify-start">
+                  <FaEnvelope className="text-[#048998]" />
+                  <span className="text-sm md:text-base">{userPro?.email}</span>
+                </div>
+                {userPro?.contact && (
+                  <div className="flex items-center gap-2 justify-center md:justify-start">
+                    <FaPhone className="text-[#048998]" />
+                    <span className="text-sm md:text-base">
+                      {userPro?.contact}
+                    </span>
+                  </div>
+                )}
+                {userPro?.address && (
+                  <div className="flex items-center gap-2 md:col-span-2 justify-center md:justify-start">
+                    <FaMapMarkerAlt className="text-[#048998] flex-shrink-0" />
+                    <span className="text-sm">{userPro?.address}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Info Section */}
-          <div className="pt-20 pb-6 px-6">
-            {/* Name & Email */}
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                {user?.displayName}
-              </h1>
-              <p className="text-gray-600">{user?.email}</p>
-            </div>
-
-            {/* Grid Info */}
-            <div className="grid md:grid-cols-2 gap-4 mb-8">
-              <InfoItem icon={FaGraduationCap} label="Education Level" value={userPro?.education} />
-              <InfoItem icon={FaBook} label="Department / Major" value={userPro?.department} />
-              <InfoItem icon={FaBriefcase} label="Experience Level" value={userPro?.experience} />
-              <InfoItem icon={FaRoad} label="Career Track" value={userPro?.careerTrack} />
-            </div>
-
-            {/* Skills */}
-            <div className="mb-6">
-              <p className="font-semibold text-gray-700 text-sm mb-2 flex items-center gap-2">
-                <FaTools className="text-[#048998]" /> Skills
-              </p>
-              {renderSkills(userPro?.skills)}
-            </div>
-             {/* tools */}
-            <div className="mb-6">
-              <p className="font-semibold text-gray-700 text-sm mb-2 flex items-center gap-2">
-                <FaTools className="text-[#048998]" /> Tools/ Technologies
-              </p>
-              {renderSkills(userPro?.tools)}
-            </div>
-
-            {/* Work Experience */}
-            <InfoItem icon={FaBriefcase} label="Work Experience" value={userPro?.job_experience} />
-
-            {/* Projects */}
-            <div className="mt-6 mb-6">
-              <p className="font-semibold text-gray-700 text-sm mb-2 flex items-center gap-2">
-                <FaProjectDiagram className="text-[#048998]" /> Projects
-              </p>
-              {renderProjects(userPro?.projects)}
-            </div>
-
-            {/* CV / Resume */}
-            {userPro?.cvPath && (
-              <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/50 transition-colors">
-                <div className="shrink-0 w-10 h-10 bg-[#048998] text-white rounded-full flex items-center justify-center mt-0.5">
-                  <FaFilePdf className="text-lg" />
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* Left Column */}
+          <div className="md:col-span-2 space-y-6">
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <FaGraduationCap className="text-[#048998]" />
+                Education
+              </h2>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-gray-600 text-sm">Degree</p>
+                  <p className="text-lg font-semibold text-gray-800">
+                    {userPro?.education || "Not specified"}
+                  </p>
                 </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-gray-700 text-sm mb-1">CV / Resume</p>
-                  <Link
-                    to={userPro.cvPath}
-                    target="_blank"
-                    className="text-[#048998] hover:text-[#026873] underline font-medium flex items-center gap-1"
-                  >
-                    View CV
-                    <FaExternalLinkAlt className="w-4 h-4" />
-                  </Link>
+                <div>
+                  <p className="text-gray-600 text-sm">Department</p>
+                  <p className="text-lg font-semibold text-gray-800">
+                    {userPro?.department || "Not specified"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Institution</p>
+                  <p className="text-lg font-semibold text-gray-800">
+                    {userPro?.educationalInstitute || "Not specified"}
+                  </p>
+                </div>
+                {userPro?.passing_year && (
+                  <div>
+                    <p className="text-gray-600 text-sm">Passing Year</p>
+                    <p className="text-lg font-semibold text-gray-800">
+                      {userPro?.passing_year}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <FaBriefcase className="text-[#048998]" />
+                Experience
+              </h2>
+              <div className="space-y-3">
+                <div>
+                  <p className="text-gray-600 text-sm">Level</p>
+                  <p className="text-lg font-semibold text-gray-800">
+                    {userPro?.experience || "Not specified"}
+                  </p>
+                </div>
+                {userPro?.job_experience && (
+                  <div>
+                    <p className="text-gray-600 text-sm mb-2">
+                      Work Experience
+                    </p>
+                    <p className="text-gray-700 leading-relaxed">
+                      {userPro?.job_experience}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {projects.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  Projects
+                </h2>
+                <div className="space-y-4">
+                  {projects.map((project, index) => (
+                    <div
+                      key={index}
+                      className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+                    >
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                        {project.title}
+                      </h3>
+                      {project.description && (
+                        <p className="text-gray-600 mb-3 leading-relaxed">
+                          {project.description}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap gap-4">
+                        {project.liveLink && (
+                          <a
+                            href={project.liveLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#048998] hover:text-[#037382] flex items-center gap-1 text-sm font-medium"
+                          >
+                            <FaExternalLinkAlt size={12} /> Live Demo
+                          </a>
+                        )}
+                        {project.githubLink && (
+                          <a
+                            href={project.githubLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#048998] hover:text-[#037382] flex items-center gap-1 text-sm font-medium"
+                          >
+                            <FaGithub size={14} /> View Code
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
 
-            {/* Action Button */}
-            <div className="flex justify-center pt-6">
-              <Link to="/v1/update-profile">
-                <button className="px-8 py-3 bg-linear-to-r from-[#048998] to-[#026873] text-white font-semibold text-lg rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                  Update Profile
-                </button>
-              </Link>
+            {cocurricular.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                  <FaTrophy className="text-[#048998]" />
+                  Co-curricular Activities
+                </h2>
+                <ul className="space-y-2">
+                  {cocurricular.map((activity, index) => (
+                    <li
+                      key={index}
+                      className="flex items-start gap-3 text-gray-700"
+                    >
+                      <span className="text-[#048998] mt-1">•</span>
+                      <span>{activity}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-6">
+            {skills.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  Skills
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="bg-[#048998] text-white px-4 py-2 rounded-full text-sm font-medium shadow-sm"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Links</h2>
+              <div className="space-y-3">
+                {(userPro?.cvPath || userPro?.cv_url) && (
+                  <a
+                    href={userPro?.cvPath || userPro?.cv_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <FaFileAlt className="text-[#048998] text-xl" />
+                    <span className="text-gray-700 font-medium">Resume/CV</span>
+                  </a>
+                )}
+                {userPro?.github_link && (
+                  <a
+                    href={userPro.github_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <FaGithub className="text-[#048998] text-xl" />
+                    <span className="text-gray-700 font-medium">GitHub</span>
+                  </a>
+                )}
+                {userPro?.linkedin_link && (
+                  <a
+                    href={userPro.linkedin_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <FaLinkedin className="text-[#048998] text-xl" />
+                    <span className="text-gray-700 font-medium">LinkedIn</span>
+                  </a>
+                )}
+                {userPro?.portfolio_link && (
+                  <a
+                    href={userPro.portfolio_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <FaGlobe className="text-[#048998] text-xl" />
+                    <span className="text-gray-700 font-medium">Portfolio</span>
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>

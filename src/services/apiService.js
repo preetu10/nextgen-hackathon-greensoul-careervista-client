@@ -1,9 +1,9 @@
-// API Base URL
+
 const API_BASE_URL = 'http://localhost:5000/api';
 
-// Job API Service
+
 export const jobAPI = {
-  // Get all jobs with optional filters
+
   getAllJobs: async (filters = {}) => {
     try {
       const queryParams = new URLSearchParams(filters).toString();
@@ -23,7 +23,7 @@ export const jobAPI = {
     }
   },
 
-  // Get job by ID
+
   getJobById: async (jobId) => {
     try {
       const response = await fetch(`${API_BASE_URL}/jobs/${jobId}`);
@@ -40,7 +40,7 @@ export const jobAPI = {
     }
   },
 
-  // Get recommended jobs for a user
+
   getRecommendedJobs: async (userId) => {
     try {
       const response = await fetch(`${API_BASE_URL}/jobs/recommended/${userId}`);
@@ -57,7 +57,7 @@ export const jobAPI = {
     }
   },
 
-  // Get skill gap analysis
+ 
   getSkillGapAnalysis: async (userId, jobId) => {
     try {
       const response = await fetch(`${API_BASE_URL}/jobs/skill-gap/${userId}/${jobId}`);
@@ -74,7 +74,7 @@ export const jobAPI = {
     }
   },
 
-  // Add a new job
+
   addJob: async (jobData) => {
     try {
       const response = await fetch(`${API_BASE_URL}/jobs/add`, {
@@ -98,7 +98,7 @@ export const jobAPI = {
     }
   },
 
-  // Seed jobs (for testing)
+  
   seedJobs: async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/jobs/seed`, {
@@ -119,7 +119,7 @@ export const jobAPI = {
   },
 };
 
-// Export default for easier importing
+
 export default {
   job: jobAPI,
 };
