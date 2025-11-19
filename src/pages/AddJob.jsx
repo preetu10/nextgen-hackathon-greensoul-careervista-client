@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Briefcase, MapPin, DollarSign, Mail, Link as LinkIcon, CheckCircle, X } from "lucide-react";
+import useAxiosSecure from "../customHooks/useAxiosSecure";
 
 
 const Toast = ({ message, type, onClose }) => (
@@ -31,55 +32,6 @@ const Toast = ({ message, type, onClose }) => (
 );
 
 
-const SkillsInput = ({ value, onChange }) => {
-  const [inputValue, setInputValue] = useState("");
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && inputValue.trim()) {
-      e.preventDefault();
-      if (!value.includes(inputValue.trim())) {
-        onChange([...value, inputValue.trim()]);
-      }
-      setInputValue("");
-    }
-  };
-
-  const removeSkill = (skill) => {
-    onChange(value.filter((s) => s !== skill));
-  };
-
-  return (
-    <div className="space-y-2">
-      <input
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Type a skill and press Enter"
-        className="w-full px-3 py-2 border border-[#e3e3e3] rounded-md focus:outline-none focus:ring-2 focus:ring-[#3bb4c1] focus:border-[#3bb4c1]"
-      />
-      <div className="flex flex-wrap gap-2">
-        {value.map((skill, i) => (
-          <span
-            key={i}
-            className="inline-flex items-center gap-1 px-3 py-1 bg-[#3bb4c1]/10 text-[#048998] rounded-full text-sm"
-          >
-            {skill}
-            <button
-              type="button"
-              onClick={() => removeSkill(skill)}
-              className="hover:text-[#3bb4c1]"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-
 const ImageWithFallback = ({ src, alt, className }) => {
   const [error, setError] = useState(false);
   return error ? (
@@ -101,7 +53,6 @@ export default function AddJob() {
   const {
     register,
     handleSubmit,
-    control,
     reset,
     formState: { isSubmitting },
   } = useForm({
@@ -111,7 +62,7 @@ export default function AddJob() {
       location: "",
       workMode: "",
       experience: "",
-      skills: [],
+      skills: "",
       experienceLevel: "",
       jobType: "",
       salary: "",
@@ -122,19 +73,29 @@ export default function AddJob() {
   });
 
   const [toast, setToast] = useState(null);
+  const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {
     try {
-      const res = await fetch("http://localhost:5000/api/jobs/addjob", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      // Convert comma-separated skills string to array
+      const skillsArray = data.skills
+        ? data.skills.split(',').map(skill => skill.trim()).filter(skill => skill !== '')
+        : [];
 
-      if (res.ok) {
+      // Prepare the data with skills as array
+      const jobData = {
+        ...data,
+        skills: skillsArray
+      };
+
+      const res = await axiosSecure.post("/api/jobs/addjobs", jobData);
+      
+      if (res) {
         setToast({ message: "Job Posted Successfully!", type: "success" });
         reset();
-      } else throw new Error("Failed");
+      } else {
+        throw new Error("Failed");
+      }
     } catch (err) {
       console.error(err);
       setToast({ message: "Error posting job.", type: "error" });
@@ -165,7 +126,7 @@ export default function AddJob() {
 
       {toast && <Toast {...toast} onClose={() => setToast(null)} />}
 
-   
+      {/* Header */}
       <div className="bg-gradient-to-br from-[#3bb4c1] to-[#048998] text-white py-12 md:py-16 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full animate-pulse-slow" />
@@ -186,7 +147,7 @@ export default function AddJob() {
         </div>
       </div>
 
-     
+      {/* Form */}
       <div className="container mx-auto px-6 py-10 max-w-5xl">
         <div className="bg-white rounded-2xl shadow-lg p-8 space-y-6">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -262,13 +223,14 @@ export default function AddJob() {
 
             <div>
               <label className="font-medium text-gray-700">Required Skills</label>
-              <Controller
-                control={control}
-                name="skills"
-                render={({ field }) => (
-                  <SkillsInput value={field.value} onChange={field.onChange} />
-                )}
+              <input
+                {...register("skills")}
+                placeholder="Enter skills separated by commas (e.g., React, Node.js, MongoDB, JavaScript)"
+                className="w-full border px-3 py-2 rounded-md focus:ring-2 focus:ring-[#3bb4c1]"
               />
+              <p className="text-sm text-gray-500 mt-1">
+                💡 Tip: Separate each skill with a comma
+              </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -14,6 +14,7 @@ const JobDetails = () => {
         const res = await axios.get(`http://localhost:5000/api/jobs`);
         const jobsArray = res.data.data || res.data;
         const foundJob = jobsArray.find((j) => j._id === id);
+        console.log(jobsArray);
         setJob(foundJob);
         setLoading(false);
       } catch (error) {

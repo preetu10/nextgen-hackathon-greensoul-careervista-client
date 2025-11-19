@@ -90,7 +90,7 @@ const Register = () => {
                   title: "Success",
                   text: "You have successfully registered.",
                 }).then(() => {
-                  navigate(from);
+                  navigate("/");
                 });
               }
             });

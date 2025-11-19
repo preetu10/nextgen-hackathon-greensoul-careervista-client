@@ -27,10 +27,10 @@ const Protected = () => {
         </div>
     
      <div className="flex flex-col md:flex-row  ">
-            <div className="w-1/5 ">
+            <div className="w-1/5 md:pl-6 ">
             <Sidebar></Sidebar>
             </div>
-            <div className="flex-1 md:w-2/5 px-4">
+            <div className="flex-1 md:w-3/5 px-4 md:pl-16">
                 <Outlet></Outlet>
             </div>   
         </div>

@@ -38,6 +38,7 @@ const ViewJobs = () => {
 
       const res = await axios.get(`http://localhost:5000/api/jobs?${params.toString()}`);
       const allJobs = res.data.data || res.data;
+      console.log(allJobs);
       setJobs(allJobs);
       setLoading(false);
     } catch (error) {

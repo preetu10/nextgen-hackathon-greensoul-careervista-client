@@ -18,7 +18,7 @@ const Sidebar = () => {
     return (
       <span className=" mx-auto mt-24 loading loading-dots loading-lg"></span>
     );
-  console.log(userPro?.role);
+  // console.log(userPro?.role);
 
   return (
     <div className="md:min-h-screen">
@@ -65,8 +65,8 @@ const Sidebar = () => {
                 style={({ isActive }) => {
                   return {
                     fontWeight: isActive ? "semibold" : "",
-                    color: isActive ? "white" : "black",
-                    backgroundColor: isActive ? "#1967D2" : "",
+                    color: isActive ? "white" : "#048998",
+                    backgroundColor: isActive ? "#048998" : "",
                   };
                 }}
               >
@@ -80,8 +80,8 @@ const Sidebar = () => {
                 style={({ isActive }) => {
                   return {
                     fontWeight: isActive ? "semibold" : "",
-                    color: isActive ? "white" : "black",
-                    backgroundColor: isActive ? "#1967D2" : "",
+                    color: isActive ? "white" : "#048998",
+                    backgroundColor: isActive ? "#048998" : "",
                   };
                 }}
               >
@@ -95,8 +95,8 @@ const Sidebar = () => {
                 style={({ isActive }) => {
                   return {
                     fontWeight: isActive ? "semibold" : "",
-                    color: isActive ? "white" : "black",
-                    backgroundColor: isActive ? "#1967D2" : "",
+                    color: isActive ? "white" : "#048998",
+                    backgroundColor: isActive ? "#048998" : "",
                   };
                 }}
               >
@@ -114,8 +114,8 @@ const Sidebar = () => {
                     style={({ isActive }) => {
                       return {
                         fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
                       };
                     }}
                   >
@@ -129,8 +129,8 @@ const Sidebar = () => {
                     style={({ isActive }) => {
                       return {
                         fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
                       };
                     }}
                   >
@@ -144,8 +144,8 @@ const Sidebar = () => {
                     style={({ isActive }) => {
                       return {
                         fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
                       };
                     }}
                   >
@@ -159,8 +159,8 @@ const Sidebar = () => {
                     style={({ isActive }) => {
                       return {
                         fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
                       };
                     }}
                   >
@@ -174,8 +174,8 @@ const Sidebar = () => {
                     style={({ isActive }) => {
                       return {
                         fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
                       };
                     }}
                   >
@@ -189,23 +189,23 @@ const Sidebar = () => {
                     style={({ isActive }) => {
                       return {
                         fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
                       };
                     }}
                   >
                     CV Assistant
                   </NavLink>
                 </li>
-                 <li>
+                <li>
                   <NavLink
                     to="/v1/careerbot"
                     className="text-base"
                     style={({ isActive }) => {
                       return {
                         fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
                       };
                     }}
                   >
@@ -215,54 +215,18 @@ const Sidebar = () => {
               </>
             )}
 
-            {/* for recruiter role */}
-            {/* {userPro?.role === "recruiter" && (
-              <>
-                <li>
-                  <NavLink
-                    to="/v1/add-job"
-                    className="text-base"
-                    style={({ isActive }) => {
-                      return {
-                        fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
-                      };
-                    }}
-                  >
-                    Add New Job Post
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to={`/v1/my-posted-jobs/${userPro?.email}`}
-                    className="text-base"
-                    style={({ isActive }) => {
-                      return {
-                        fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
-                      };
-                    }}
-                  >
-                    View My Posts
-                  </NavLink>
-                </li>
-              </>
-            )} */}
-
             {/* for admin role */}
             {userPro?.role === "admin" && (
               <>
                 <li>
                   <NavLink
-                    to={"/adminviewresources"}
+                    to={"/admin/adminviewresources"}
                     className="text-base"
                     style={({ isActive }) => {
                       return {
                         fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
                       };
                     }}
                   >
@@ -271,13 +235,13 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to={"/adminview"}
+                    to={"/admin/adminview"}
                     className="text-base"
                     style={({ isActive }) => {
                       return {
                         fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
                       };
                     }}
                   >
@@ -286,21 +250,54 @@ const Sidebar = () => {
                 </li>
                 <li>
                   <NavLink
-                    to={"/addjob"}
+                    to={"/admin/addjob"}
                     className="text-base"
                     style={({ isActive }) => {
                       return {
                         fontWeight: isActive ? "semibold" : "",
-                        color: isActive ? "white" : "black",
-                        backgroundColor: isActive ? "#1967D2" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
                       };
                     }}
                   >
                     Add Job Post
                   </NavLink>
                 </li>
+                
               </>
             )}
+             <hr className="my-4 border-2 bg-[#3bb4c1] " />
+                  <li>
+                  <NavLink
+                    to={"/v1/user-profile"}
+                    className="text-base"
+                    style={({ isActive }) => {
+                      return {
+                        fontWeight: isActive ? "semibold" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
+                      };
+                    }}
+                  >
+                    My Profile
+                  </NavLink>
+                </li>
+                 <li>
+                  <NavLink
+                    to={userPro?.role==="user"?"/v1/dashboard":"/admin/dashboard"}
+                    className="text-base"
+                    style={({ isActive }) => {
+                      return {
+                        fontWeight: isActive ? "semibold" : "",
+                        color: isActive ? "white" : "#048998",
+                        backgroundColor: isActive ? "#048998" : "",
+                      };
+                    }}
+                  >
+                    My Dashboard
+                  </NavLink>
+                </li>
+                 
           </ul>
         </div>
       </div>

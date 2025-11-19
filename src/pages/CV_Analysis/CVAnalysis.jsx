@@ -63,7 +63,6 @@ export default function CVAnalysis() {
       if (response.data.success && response.data.data) {
         const analysisData = {
           extractedSkills: response.data.data.extractedSkills || [],
-          extractedTools: response.data.data.extractedTools || [],
           careerTrack: response.data.data.careerTrack || [],
           cvPath: response.data.data.cvPath || "",
           fileName: response.data.data.fileName || "",
@@ -99,7 +98,6 @@ export default function CVAnalysis() {
         `/api/update-from-cv/${user?.email}`,
         {
           skills: analysisResult.extractedSkills,
-          tools: analysisResult.extractedTools,
           careerTrack: selectedCareerTrack,
         }
       );
@@ -230,8 +228,7 @@ export default function CVAnalysis() {
                   Analysis Complete!
                 </p>
                 <p className="text-green-700">
-                  Found {analysisResult?.extractedSkills?.length} skills and{" "}
-                  {analysisResult?.extractedTools?.length} tools
+                  Found {analysisResult?.extractedSkills?.length} skills 
                 </p>
               </div>
             </div>
@@ -257,31 +254,6 @@ export default function CVAnalysis() {
                 </div>
               ) : (
                 <p className="text-gray-500">No skills extracted</p>
-              )}
-            </div>
-
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <FaTools className="text-3xl text-[#048998]" />
-                <h2 className="text-2xl font-bold text-gray-800">
-                  Tools & Technologies ({analysisResult?.extractedTools?.length}
-                  )
-                </h2>
-              </div>
-
-              {analysisResult?.extractedTools?.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {analysisResult?.extractedTools?.map((tool, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-medium border-2 border-gray-300"
-                    >
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500">No tools extracted</p>
               )}
             </div>
 

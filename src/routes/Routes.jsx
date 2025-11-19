@@ -22,6 +22,8 @@ import AdminResourcesView from "../pages/AdminResourcesView";
 import CareerRoadmap from "../pages/CareerMap/CareerMap";
 import CVAnalysis from "../pages/CV_Analysis/CVAnalysis";
 import CVAssistant from "../pages/CVAssistant/CVAssistant";
+import UserDashboard from "../pages/dashboard/UserDashboard";
+import AdminDashboard from "../pages/dashboard/AdminDashboard";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -48,27 +50,7 @@ export const router = createBrowserRouter([
         path: "/all-resources",
         element: <AllResources></AllResources>,
       },
-        {
-      path: "adminview",
-        element: <AdminJobsView></AdminJobsView>,
-    },
-    {
-      path: "adminviewresources",
-        element: <AdminResourcesView></AdminResourcesView>,
-    },
-    {
-        
-        path: "addjob",
-        element: <AddJob></AddJob>,
-      
-    }
 
-     
-//        {
-//   path: "/jobs/recommend/:id",  
-//   element: <JobRecommend></JobRecommend>,
-// }
-     
     ],
   },
   {
@@ -80,6 +62,10 @@ export const router = createBrowserRouter([
     ),
     errorElement: <Error></Error>,
     children: [
+      {
+        path:"dashboard",
+        element:<UserDashboard></UserDashboard>
+      },
       {
         path: "user-profile",
         element: <Profile></Profile>,
@@ -107,20 +93,22 @@ export const router = createBrowserRouter([
       {
         path: "careerbot",
         element: <CareerBot></CareerBot>,
-      },{
-        path:"get-career-roadmap",
-        element:<CareerRoadmap></CareerRoadmap>
       },
       {
-        path:"cv-analysis",
-        element:<CVAnalysis></CVAnalysis>
+        path: "get-career-roadmap",
+        element: <CareerRoadmap></CareerRoadmap>,
       },
       {
-        path:"cv-assistant",
-        element:<CVAssistant></CVAssistant>
-      }
+        path: "cv-analysis",
+        element: <CVAnalysis></CVAnalysis>,
+      },
+      {
+        path: "cv-assistant",
+        element: <CVAssistant></CVAssistant>,
+      },
     ],
-  },{
+  },
+  {
     path: "admin",
     element: (
       <AdminRoute>
@@ -129,7 +117,22 @@ export const router = createBrowserRouter([
     ),
     errorElement: <Error></Error>,
     children: [
-   
-  ]
-  }
+      {
+        path:"dashboard",
+        element:<AdminDashboard></AdminDashboard>
+      },
+      {
+        path: "adminview",
+        element: <AdminJobsView></AdminJobsView>,
+      },
+      {
+        path: "adminviewresources",
+        element: <AdminResourcesView></AdminResourcesView>,
+      },
+      {
+        path: "addjob",
+        element: <AddJob></AddJob>,
+      },
+    ],
+  },
 ]);
