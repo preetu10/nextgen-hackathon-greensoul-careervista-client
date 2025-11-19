@@ -108,9 +108,7 @@ const NavBar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
-            <li>
-              <Link to="/dashboard" className="hover:text-[#048998]">Dashboard</Link>
-            </li>
+           
              <li>
               <Link to="/v1/user-profile" className="mt-2 hover:text-[#048998]">My Profile</Link>
             </li>

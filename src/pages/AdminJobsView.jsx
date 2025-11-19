@@ -6,7 +6,7 @@ export default function AdminJobsView() {
 
   const fetchJobs = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/jobs/all");
+      const res = await fetch("http://localhost:5000/api/jobs/");
       const data = await res.json();
       setJobs(data.data || []);
     } catch (err) {

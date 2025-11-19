@@ -2,9 +2,19 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useContext } from "react";
 import { AuthContext } from "../FirebaseProvider/FirebaseProvider";
+import useAxiosSecure from "../customHooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const NavBar = () => {
   const { logOut, user } = useContext(AuthContext);
+      const axiosSecure = useAxiosSecure();
+  const { data: userPro = {} } = useQuery({
+    queryKey: ["userPro", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/api/user/${user?.email}`);
+      return res.data;
+    },
+  });
 
   return (
    
@@ -61,12 +71,11 @@ const NavBar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
-            <li>
-              <Link to="/dashboard" className="hover:text-[#048998]">Dashboard</Link>
-            </li>
-             <li>
-              <Link to="/v1/user-profile" className="mt-2 hover:text-[#048998]">My Profile</Link>
-            </li>
+              <li>
+                <Link to={userPro?.role==="user"?"/v1/dashboard":"/admin/dashboard"} className="hover:text-[#048998]">
+                  Dashboard
+                </Link>
+              </li>
             <li className="mt-2">
               <button
                 onClick={logOut}

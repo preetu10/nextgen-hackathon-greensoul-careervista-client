@@ -449,7 +449,7 @@ const CVAssistant = () => {
 
           <button
             onClick={handleDownloadFastPDF}
-            className="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg flex items-center gap-2 transition-colors"
+            className="mt-6 px-6 py-3 bg-[#048998] hover:bg-[#3bb4c1] text-white font-semibold rounded-lg flex items-center gap-2 transition-colors"
           >
             <Download size={20} />
             Download CV as PDF

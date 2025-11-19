@@ -20,7 +20,7 @@ const Login = () => {
   const from = location?.state || "/";
 
   useEffect(() => {
-    if (user) navigate("/");
+    if (user) navigate("/v1/user-profile");
   }, [navigate, user]);
 
   const onSubmit = async (data) => {
@@ -69,7 +69,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center mt-16 font-Lato min-h-screen">
+    <div className="flex justify-center items-center mt-4 min-h-screen">
       <div className="flex w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
         <div
           className="hidden lg:block lg:w-1/2 bg-cover bg-center"
