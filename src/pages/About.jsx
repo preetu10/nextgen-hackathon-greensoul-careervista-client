@@ -144,10 +144,10 @@ const About = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#f6f5f5] to-[#e3e3e3]">
       {/* Spacer for navbar */}
-      <div className="h-20"></div>
+      <div className="h-6"></div>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#3bb4c1] via-[#048998] to-[#037785] text-white py-24 px-6">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#3bb4c1] via-[#048998] to-[#037785] text-white py-24 px-6 rounded-xl">
         <div className="absolute inset-0 bg-black opacity-10"></div>
         
         {/* Animated floating circles */}
@@ -178,7 +178,7 @@ const About = () => {
 
       {/* Company Story Section */}
       <section className="py-20 px-6 mt-16">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div className=" grid md:grid-cols-2 gap-12 items-center">
           {/* Left: Text Content */}
           <AnimatedSection delay={200}>
             <div className="space-y-6">
@@ -215,7 +215,7 @@ const About = () => {
 
       {/* Mission / Vision Cards */}
       <section className="py-20 px-6 bg-[#f6f5f5] mt-16">
-        <div className="max-w-7xl mx-auto">
+        <div className="">
           <AnimatedSection delay={100}>
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">What Drives Us</h2>
@@ -247,7 +247,7 @@ const About = () => {
 
       {/* Our Values Section */}
       <section className="py-20 px-6 mt-16">
-        <div className="max-w-7xl mx-auto">
+        <div className="">
           <AnimatedSection delay={100}>
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Values</h2>
@@ -282,7 +282,7 @@ const About = () => {
 
       {/* Team Section */}
       <section className="py-20 px-6 bg-[#e3e3e3] mt-16">
-        <div className="max-w-7xl mx-auto">
+        <div className="">
           <AnimatedSection delay={100}>
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">Meet Our Team</h2>
@@ -348,8 +348,8 @@ const About = () => {
         </AnimatedSection>
       </section>
 
-      {/* Spacer for footer */}
-      <div className="h-20 "></div>
+      {/* Spacer for footer
+      <div className="h-20 "></div> */}
 
       {/* CSS Animations */}
       <style jsx>{`
