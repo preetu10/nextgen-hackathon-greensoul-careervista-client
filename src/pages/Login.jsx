@@ -7,7 +7,7 @@ import "sweetalert2/dist/sweetalert2.css";
 import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
-  const { signinUser, signinWithGoogle, user } = useContext(AuthContext);
+  const { signinUser, user } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -51,22 +51,22 @@ const Login = () => {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      const result = await signinWithGoogle();
-      if (result.user) {
-        Swal.fire({
-          icon: "success",
-          title: "Logged in with Google!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(from, { replace: true });
-      }
-    } catch (error) {
-      console.error("Google Sign-In Error:", error);
-    }
-  };
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     const result = await signinWithGoogle();
+  //     if (result.user) {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Logged in with Google!",
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       });
+  //       navigate(from, { replace: true });
+  //     }
+  //   } catch (error) {
+  //     console.error("Google Sign-In Error:", error);
+  //   }
+  // };
 
   return (
     <div className="flex justify-center items-center mt-4 min-h-screen">
@@ -85,7 +85,7 @@ const Login = () => {
           <p className="text-center text-gray-500 mb-8">
             Log in to continue exploring
           </p>
-
+{/* 
           <button
             onClick={handleGoogleSignIn}
             className="flex items-center justify-center w-full py-3 mb-6 border rounded-lg hover:bg-gray-100 transition"
@@ -94,12 +94,12 @@ const Login = () => {
             <span className="font-medium text-gray-600">
               Sign in with Google
             </span>
-          </button>
+          </button> */}
 
           <div className="flex items-center justify-center my-6">
             <span className="w-1/5 border-b border-gray-300"></span>
             <span className="text-xs text-gray-400 mx-2 uppercase">
-              or login with email
+             Provide Your Credentials Here
             </span>
             <span className="w-1/5 border-b border-gray-300"></span>
           </div>
