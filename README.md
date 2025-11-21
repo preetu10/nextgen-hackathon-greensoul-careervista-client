@@ -91,3 +91,20 @@ yarn install
 ### 3. Environment Configuration
 
 Create a `.env` file in the root directory and set all configurations.
+
+### 4. Run Development Server
+
+bash
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+The application will start at http://localhost:5173
+
+
+### Contributors
+- [Mahfuja Yesmin](https://github.com/preetu10)
+- [Raisa Nuzhat](https://github.com/RaisaNuzhat)
