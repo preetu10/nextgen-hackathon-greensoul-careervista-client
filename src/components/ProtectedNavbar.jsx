@@ -69,7 +69,7 @@ const NavBar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-sm z-100 dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
               <li>
                 <Link to={userPro?.role==="user"?"/v1/dashboard":"/admin/dashboard"} className="hover:text-[#048998]">

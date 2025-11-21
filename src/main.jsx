@@ -16,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Toaster />
     </FirebaseProvider>
     </QueryClientProvider>
+    
   </React.StrictMode>,
 )
 

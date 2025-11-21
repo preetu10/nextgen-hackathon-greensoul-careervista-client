@@ -56,7 +56,7 @@ export default function AdminJobsView() {
 
             <tbody>
               {jobs.map((job, index) => (
-                <tr key={job._id}>
+                <tr key={job._id} className="text-sm">
                   <td>{index + 1}</td>
                   <td>
                     <img
@@ -75,7 +75,7 @@ export default function AdminJobsView() {
                       {job.skills?.map((s, i) => (
                         <span
                           key={i}
-                          className="badge badge-outline badge-primary"
+                          className="badge text-xs badge-outline badge-primary"
                         >
                           {s}
                         </span>

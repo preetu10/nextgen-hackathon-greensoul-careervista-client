@@ -65,7 +65,7 @@ export default function AdminResourcesView() {
                       {res.relatedSkills?.map((s, i) => (
                         <span
                           key={i}
-                          className="badge badge-outline badge-primary"
+                          className="badge text-xs badge-outline badge-primary"
                         >
                           {s}
                         </span>

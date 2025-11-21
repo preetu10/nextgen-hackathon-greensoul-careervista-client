@@ -43,14 +43,14 @@ const AdminAnalyticsDashboard = () => {
         throw new Error('Unauthorized: Admin access required.');
       }
 
-      // Fetch data from existing endpoints using axiosSecure
+      
       const [usersRes, jobsRes, resourcesRes] = await Promise.all([
         axiosSecure.get('/api/users'),
         axiosSecure.get('/api/jobs/all'),
         axiosSecure.get('/api/get-all-resources')
       ]);
 
-      // Extract data from response structure
+     
       const users = Array.isArray(usersRes.data) ? usersRes.data : usersRes.data.data || [];
       const jobs = jobsRes.data.data || [];
       const resources = Array.isArray(resourcesRes.data) ? resourcesRes.data : resourcesRes.data.data || [];
@@ -68,18 +68,18 @@ const AdminAnalyticsDashboard = () => {
   };
 
   const processAnalytics = (users, jobs, resources) => {
-    // Process users
+  
     const skillCategories = {};
     const careerTracks = {};
     const skillFrequency = {};
     const monthlyUsers = {};
 
     users.forEach(user => {
-      // Career tracks
+     
       const track = user.careerTrack || 'Undecided';
       careerTracks[track] = (careerTracks[track] || 0) + 1;
 
-      // Process skills
+      
       let userSkills = [];
       if (Array.isArray(user.skills)) {
         userSkills = user.skills;
@@ -99,7 +99,7 @@ const AdminAnalyticsDashboard = () => {
         }
       });
 
-      // User growth by month
+      
       if (user.timestamp) {
         const date = new Date(user.timestamp);
         const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
@@ -107,7 +107,7 @@ const AdminAnalyticsDashboard = () => {
       }
     });
 
-    // Process jobs
+    
     const jobsByExperience = {};
     const jobsByType = {};
     
@@ -119,7 +119,7 @@ const AdminAnalyticsDashboard = () => {
       jobsByType[type] = (jobsByType[type] || 0) + 1;
     });
 
-    // Process resources
+   
     const resourcesByTrack = {};
     const resourcesByCost = { 'Free': 0, 'Paid': 0 };
     
@@ -133,13 +133,13 @@ const AdminAnalyticsDashboard = () => {
       resourcesByCost[cost] = (resourcesByCost[cost] || 0) + 1;
     });
 
-    // Top 10 skills
+   
     const topSkills = Object.entries(skillFrequency)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(([skill, count]) => ({ skill, count }));
 
-    // User growth timeline (last 6 months)
+    
     const sortedMonths = Object.keys(monthlyUsers).sort();
     const last6Months = sortedMonths.slice(-6);
     const userGrowth = last6Months.map(month => ({

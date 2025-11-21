@@ -68,13 +68,13 @@ const AnalyticsDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        
         <div className="mb-8 animate-fadeIn">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">Analytics Dashboard</h1>
           <p className="text-gray-600">Real-time insights into job market trends and user skills</p>
         </div>
 
-        {/* Overview Cards */}
+       
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {[
             { 
@@ -130,10 +130,10 @@ const AnalyticsDashboard = () => {
           ))}
         </div>
 
-        {/* Main Analytics Grid */}
+      
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
-          {/* Job Market Analysis */}
+       
           <div className="bg-white rounded-xl shadow-md p-6 animate-slideUp" style={{ animationDelay: '400ms' }}>
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-teal-50 rounded-lg">
@@ -142,7 +142,6 @@ const AnalyticsDashboard = () => {
               <h2 className="text-2xl font-bold text-gray-800">Job Market Analysis</h2>
             </div>
 
-            {/* Experience Level Distribution */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-gray-700 mb-4">Experience Level Distribution</h3>
               <div className="space-y-4">
@@ -166,7 +165,7 @@ const AnalyticsDashboard = () => {
               </div>
             </div>
 
-            {/* Job Types */}
+           
             <div>
               <h3 className="text-lg font-semibold text-gray-700 mb-4">Job Type Distribution</h3>
               <div className="grid grid-cols-2 gap-4">
@@ -192,7 +191,7 @@ const AnalyticsDashboard = () => {
             </div>
           </div>
 
-          {/* Top Skills Analysis */}
+         
           <div className="bg-white rounded-xl shadow-md p-6 animate-slideUp" style={{ animationDelay: '500ms' }}>
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-cyan-50 rounded-lg">
@@ -201,7 +200,7 @@ const AnalyticsDashboard = () => {
               <h2 className="text-2xl font-bold text-gray-800">Top Skills in Demand</h2>
             </div>
 
-            {/* Technical Skills */}
+        
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-gray-700 mb-4">Most Demanded Skills</h3>
               <div className="space-y-3">
@@ -228,7 +227,7 @@ const AnalyticsDashboard = () => {
               </div>
             </div>
 
-            {/* Trending Skills */}
+          
             <div>
               <h3 className="text-lg font-semibold text-gray-700 mb-4">Fastest Growing Skills</h3>
               <div className="grid grid-cols-2 gap-3">
@@ -250,7 +249,7 @@ const AnalyticsDashboard = () => {
             </div>
           </div>
 
-          {/* Career Tracks Distribution */}
+         
           <div className="bg-white rounded-xl shadow-md p-6 lg:col-span-2 animate-slideUp" style={{ animationDelay: '600ms' }}>
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-teal-50 rounded-lg">

@@ -5,6 +5,7 @@ import "../index.css"
 import ProtectedNavbar from "../components/ProtectedNavbar";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
+import ScrollToTop from "../components/ScrollToTop";
 const Protected = () => {
     return (
         <>
@@ -36,6 +37,7 @@ const Protected = () => {
         </div>
         </div>
         <Footer></Footer>
+        <ScrollToTop></ScrollToTop>
  
         </>
     );
