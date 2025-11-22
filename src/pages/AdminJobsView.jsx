@@ -6,7 +6,7 @@ export default function AdminJobsView() {
 
   const fetchJobs = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/jobs/");
+      const res = await fetch("https://nextgen-hackathon-greensoul-careerv.vercel.app/api/jobs/");
       const data = await res.json();
       setJobs(data.data || []);
     } catch (err) {

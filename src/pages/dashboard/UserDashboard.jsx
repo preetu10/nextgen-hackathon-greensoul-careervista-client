@@ -12,7 +12,7 @@ const AnalyticsDashboard = () => {
     const fetchAnalytics = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('http://localhost:5000/api/user-analysis/complete');
+        const response = await fetch('https://nextgen-hackathon-greensoul-careerv.vercel.app/api/user-analysis/complete');
         const result = await response.json();
         
         if (result.success) {

@@ -36,7 +36,7 @@ const ViewJobs = () => {
       if (filterParams.location) params.append("location", filterParams.location);
       if (filterParams.jobType) params.append("jobType", filterParams.jobType);
 
-      const res = await axios.get(`http://localhost:5000/api/jobs?${params.toString()}`);
+      const res = await axios.get(`https://nextgen-hackathon-greensoul-careerv.vercel.app/api/jobs?${params.toString()}`);
       const allJobs = res.data.data || res.data;
       console.log(allJobs);
       setJobs(allJobs);
