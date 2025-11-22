@@ -22,7 +22,7 @@ export default function CareerBot() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/careerbot/ask", {
+      const res = await fetch("https://nextgen-hackathon-greensoul-careerv.vercel.app/api/careerbot/ask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

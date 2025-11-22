@@ -11,7 +11,7 @@ const JobDetails = () => {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/jobs`);
+        const res = await axios.get(`https://nextgen-hackathon-greensoul-careerv.vercel.app/api/jobs`);
         const jobsArray = res.data.data || res.data;
         const foundJob = jobsArray.find((j) => j._id === id);
         console.log(jobsArray);

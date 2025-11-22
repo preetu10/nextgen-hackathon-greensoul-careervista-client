@@ -6,7 +6,7 @@ export default function AdminResourcesView() {
 
   const fetchResources = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/get-all-resources");
+      const res = await fetch("https://nextgen-hackathon-greensoul-careerv.vercel.app/api/get-all-resources");
       const data = await res.json();
       setResources(data || []);
     } catch (err) {

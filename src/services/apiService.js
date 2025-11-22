@@ -1,5 +1,5 @@
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://nextgen-hackathon-greensoul-careerv.vercel.app/api';
 
 
 export const jobAPI = {
