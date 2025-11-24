@@ -3,6 +3,9 @@
 
 This project was developed during **IIUC Tech Fest 2025 - NextGen Hackathon**, where our team (Team GreenSoul) achieved **7th place** among competing teams. The hackathon challenged participants to create innovative solutions addressing the United Nations Sustainable Development Goals.
 
+## 🔗 Visit CareerVista
+- [CareerVista](https://hackathon-39f93.web.app/)
+
 ## 🔗 GitHub Repositories
 -   **Frontend Client**: [nextgen-hackathon-greensoul-careervista-client](https://github.com/preetu10/nextgen-hackathon-greensoul-careervista-client)
 -   **Backend Server**: [nextgen-hackathon-greensoul-careervista-server](https://github.com/RaisaNuzhat/nextgen-hackathon-greensoul-careervista-server)
